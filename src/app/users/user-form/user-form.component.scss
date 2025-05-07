@@ -1,0 +1,31 @@
+.user-form-container {
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.full-width {
+  width: 100%;
+  margin-bottom: 18px;
+}
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.error {
+  color: #d32f2f;
+  margin: 1rem 0;
+  text-align: center;
+}
+mat-progress-spinner {
+  display: block;
+  margin: 2rem auto;
+}

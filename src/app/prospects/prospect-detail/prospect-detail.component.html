@@ -1,0 +1,210 @@
+<div class="prospect-detail-container">
+  <div class="page-header">
+    <div class="header-title">
+      <button mat-icon-button (click)="goBack()" class="back-button">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h1 *ngIf="prospect">{{ prospect.prenom }} {{ prospect.nom }}</h1>
+      <p *ngIf="prospect">{{ prospect.entreprise }}</p>
+    </div>
+    <div class="header-actions" *ngIf="prospect">
+      <button mat-stroked-button color="primary" (click)="editProspect()">
+        <mat-icon>edit</mat-icon>
+        Modifier
+      </button>
+      <button mat-stroked-button color="warn" (click)="deleteProspect()">
+        <mat-icon>delete</mat-icon>
+        Supprimer
+      </button>
+      <button mat-flat-button color="primary" (click)="convertToClient()">
+        <mat-icon>upgrade</mat-icon>
+        Convertir en Client
+      </button>
+    </div>
+  </div>
+
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+
+  <div class="error-container" *ngIf="error">
+    <mat-icon color="warn">error</mat-icon>
+    <p>{{ error }}</p>
+    <button mat-flat-button color="primary" (click)="loadProspect()">Réessayer</button>
+  </div>
+
+  <div class="prospect-content" *ngIf="prospect && !isLoading">
+    <div class="prospect-info-container">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Informations Générales</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="info-label">Statut</span>
+              <span class="statut-chip" [ngClass]="prospect.statut.toLowerCase()">{{ prospect.statut }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Potentiel</span>
+              <span>{{ prospect.potentiel }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Date de création</span>
+              <span>{{ prospect.dateCreation | date:'dd/MM/yyyy' }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Source de prospection</span>
+              <span>{{ prospect.sourceProspection }}</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Coordonnées</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="info-label">Email</span>
+              <span>{{ prospect.email }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Téléphone</span>
+              <span>{{ prospect.telephone }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Mobile</span>
+              <span>{{ prospect.mobile || 'Non renseigné' }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Adresse</span>
+              <span>{{ prospect.adresse || 'Non renseignée' }}</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Informations Entreprise</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="info-label">Entreprise</span>
+              <span>{{ prospect.entreprise }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Matricule Fiscale</span>
+              <span>{{ prospect.matriculeFiscale || 'Non renseigné' }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Secteur d'Activité</span>
+              <span>{{ prospect.secteurActivite }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Site Web</span>
+              <span>{{ prospect.siteWeb || 'Non renseigné' }}</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card *ngIf="prospect.notes">
+        <mat-card-header>
+          <mat-card-title>Notes</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p class="notes-content">{{ prospect.notes }}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="prospect-activity-container">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Historique des Interactions</mat-card-title>
+          <button mat-icon-button color="primary" matTooltip="Ajouter une interaction">
+            <mat-icon>add</mat-icon>
+          </button>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="activity-timeline">
+            <!-- Placeholder for activity timeline -->
+            <div class="timeline-item">
+              <div class="timeline-icon">
+                <mat-icon>phone</mat-icon>
+              </div>
+              <div class="timeline-content">
+                <h3>Appel téléphonique</h3>
+                <p class="timeline-date">12/05/2023 - 14:30</p>
+                <p>Discussion sur les besoins en emballage pour leur nouvelle gamme de produits.</p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-icon">
+                <mat-icon>email</mat-icon>
+              </div>
+              <div class="timeline-content">
+                <h3>Email envoyé</h3>
+                <p class="timeline-date">10/05/2023 - 09:15</p>
+                <p>Envoi du catalogue de produits et demande de rendez-vous.</p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-icon">
+                <mat-icon>event</mat-icon>
+              </div>
+              <div class="timeline-content">
+                <h3>Premier contact</h3>
+                <p class="timeline-date">05/05/2023 - 11:00</p>
+                <p>Prospect identifié lors du salon de l'emballage.</p>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Documents</mat-card-title>
+          <button mat-icon-button color="primary" matTooltip="Ajouter un document">
+            <mat-icon>upload_file</mat-icon>
+          </button>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="documents-list">
+            <!-- Placeholder for documents list -->
+            <div class="document-item">
+              <mat-icon>description</mat-icon>
+              <span>Catalogue_produits.pdf</span>
+              <div class="document-actions">
+                <button mat-icon-button matTooltip="Télécharger">
+                  <mat-icon>download</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" matTooltip="Supprimer">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+            <div class="document-item">
+              <mat-icon>image</mat-icon>
+              <span>Carte_visite.jpg</span>
+              <div class="document-actions">
+                <button mat-icon-button matTooltip="Télécharger">
+                  <mat-icon>download</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" matTooltip="Supprimer">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

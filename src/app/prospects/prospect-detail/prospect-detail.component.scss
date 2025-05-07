@@ -1,0 +1,258 @@
+.prospect-detail-container {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  
+  .header-title {
+    display: flex;
+    align-items: center;
+    
+    .back-button {
+      margin-right: 16px;
+    }
+    
+    h1 {
+      font-size: 28px;
+      font-weight: 500;
+      margin: 0 0 8px 0;
+      color: #333;
+    }
+    
+    p {
+      font-size: 16px;
+      color: #666;
+      margin: 0;
+    }
+  }
+  
+  .header-actions {
+    display: flex;
+    gap: 12px;
+  }
+}
+
+.loading-container, .error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  
+  p {
+    margin: 16px 0;
+    color: #666;
+  }
+  
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 16px;
+  }
+}
+
+.prospect-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+
+.prospect-info-container, .prospect-activity-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+mat-card {
+  margin-bottom: 0;
+  
+  mat-card-header {
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    mat-card-title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 500;
+    }
+  }
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  
+  .info-label {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 4px;
+  }
+}
+
+.notes-content {
+  white-space: pre-line;
+  color: #333;
+  line-height: 1.5;
+}
+
+.statut-chip {
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-block;
+  width: fit-content;
+  
+  &.nouveau {
+    background-color: #e3f2fd;
+    color: #1976d2;
+  }
+  
+  &.contacte {
+    background-color: #e8f5e9;
+    color: #388e3c;
+  }
+  
+  &.qualifie {
+    background-color: #f3e5f5;
+    color: #7b1fa2;
+  }
+  
+  &.proposition {
+    background-color: #fff8e1;
+    color: #ffa000;
+  }
+  
+  &.negociation {
+    background-color: #fff3e0;
+    color: #e64a19;
+  }
+  
+  &.gagne {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+  }
+  
+  &.perdu {
+    background-color: #ffebee;
+    color: #c62828;
+  }
+}
+
+.activity-timeline {
+  .timeline-item {
+    display: flex;
+    margin-bottom: 24px;
+    position: relative;
+    
+    &:not(:last-child):before {
+      content: '';
+      position: absolute;
+      left: 20px;
+      top: 40px;
+      bottom: -24px;
+      width: 2px;
+      background-color: #e0e0e0;
+    }
+    
+    .timeline-icon {
+      background-color: #f5f5f5;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 16px;
+      z-index: 1;
+      
+      mat-icon {
+        color: #666;
+      }
+    }
+    
+    .timeline-content {
+      flex: 1;
+      
+      h3 {
+        font-size: 16px;
+        font-weight: 500;
+        margin: 0 0 4px 0;
+        color: #333;
+      }
+      
+      .timeline-date {
+        font-size: 12px;
+        color: #888;
+        margin: 0 0 8px 0;
+      }
+      
+      p {
+        margin: 0;
+        color: #666;
+      }
+    }
+  }
+}
+
+.documents-list {
+  .document-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+    
+    mat-icon {
+      margin-right: 12px;
+      color: #666;
+    }
+    
+    span {
+      flex: 1;
+    }
+    
+    .document-actions {
+      display: flex;
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .prospect-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    
+    .header-actions {
+      margin-top: 16px;
+    }
+  }
+  
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+}

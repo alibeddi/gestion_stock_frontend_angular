@@ -1,0 +1,22 @@
+<div class="quote-detail-container">
+  <button mat-button color="primary" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon> Back to Quotes
+  </button>
+
+  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <mat-card *ngIf="!isLoading && !error && quote">
+    <mat-card-title>Quote #{{ quote.id }}</mat-card-title>
+    <mat-card-subtitle>Client: {{ quote.clientName }}</mat-card-subtitle>
+    <mat-card-content>
+      <p><strong>Date:</strong> {{ quote.date | date }}</p>
+      <p><strong>Total:</strong> {{ quote.total | currency }}</p>
+      <p><strong>Status:</strong> {{ quote.status }}</p>
+      <!-- Add more fields as needed -->
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" [routerLink]="['/quotes/quote-form', quote.id]">Edit</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

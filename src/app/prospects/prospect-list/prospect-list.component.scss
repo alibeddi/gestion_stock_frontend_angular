@@ -1,0 +1,163 @@
+.prospect-list-container {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  
+  .header-title {
+    h1 {
+      font-size: 28px;
+      font-weight: 500;
+      margin: 0 0 8px 0;
+      color: #333;
+    }
+    
+    p {
+      font-size: 16px;
+      color: #666;
+      margin: 0;
+    }
+  }
+}
+
+mat-card {
+  margin-bottom: 24px;
+}
+
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.filter-panel {
+  padding: 16px 0;
+  
+  .filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 16px;
+    
+    mat-form-field {
+      flex: 1;
+      min-width: 200px;
+    }
+  }
+}
+
+.table-container {
+  position: relative;
+  overflow: auto;
+  
+  table {
+    width: 100%;
+  }
+  
+  .mat-column-actions {
+    width: 180px;
+    text-align: center;
+  }
+}
+
+.loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.no-data {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px;
+  color: #666;
+  
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+}
+
+.statut-chip {
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-block;
+  
+  &.nouveau {
+    background-color: #e3f2fd;
+    color: #1976d2;
+  }
+  
+  &.contacte {
+    background-color: #e8f5e9;
+    color: #388e3c;
+  }
+  
+  &.qualifie {
+    background-color: #f3e5f5;
+    color: #7b1fa2;
+  }
+  
+  &.proposition {
+    background-color: #fff8e1;
+    color: #ffa000;
+  }
+  
+  &.negociation {
+    background-color: #fff3e0;
+    color: #e64a19;
+  }
+  
+  &.gagne {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+  }
+  
+  &.perdu {
+    background-color: #ffebee;
+    color: #c62828;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    
+    button {
+      margin-top: 16px;
+      align-self: flex-start;
+    }
+  }
+  
+  .filter-row {
+    flex-direction: column;
+    
+    mat-form-field {
+      width: 100%;
+    }
+  }
+  
+  .mat-column-actions {
+    width: 120px;
+  }
+}

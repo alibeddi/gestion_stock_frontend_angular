@@ -1,0 +1,23 @@
+<div class="product-detail-container">
+  <button mat-button color="primary" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon> Back to Products
+  </button>
+
+  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <mat-card *ngIf="!isLoading && !error && product">
+    <mat-card-title>{{ product.libelle }}</mat-card-title>
+    <mat-card-subtitle>Code: {{ product.code }}</mat-card-subtitle>
+    <mat-card-content>
+      <p><strong>Description:</strong> {{ product.description }}</p>
+      <p><strong>Prix de détail:</strong> {{ product.prixDetail | currency }}</p>
+      <p><strong>Prix gérant:</strong> {{ product.prixGerant | currency }}</p>
+      <p><strong>Prix de gros:</strong> {{ product.prixGros | currency }}</p>
+      <p><strong>Quantity:</strong> {{ product.quantity }}</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" [routerLink]="['/products/product-form', product.id]">Edit</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

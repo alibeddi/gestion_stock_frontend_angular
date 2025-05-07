@@ -1,0 +1,110 @@
+<div class="dashboard-container">
+  <!-- Header Section -->
+  <div class="dashboard-header">
+    <h1>Dashboard</h1>
+    <div class="date-display">{{ currentDate | date:'EEEE, MMMM d, y' }}</div>
+  </div>
+
+  <!-- Stats Cards Section -->
+  <div class="stats-container">
+    <div class="stat-card">
+      <div class="stat-icon clients">
+        <mat-icon>people</mat-icon>
+      </div>
+      <div class="stat-details">
+        <h3>Clients</h3>
+        <p class="stat-value">{{ clientCount || 0 }}</p>
+        <p class="stat-change positive">+5% <mat-icon>trending_up</mat-icon></p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon products">
+        <mat-icon>inventory_2</mat-icon>
+      </div>
+      <div class="stat-details">
+        <h3>Produits</h3>
+        <p class="stat-value">{{ productCount || 0 }}</p>
+        <p class="stat-change positive">+12% <mat-icon>trending_up</mat-icon></p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon quotes">
+        <mat-icon>description</mat-icon>
+      </div>
+      <div class="stat-details">
+        <h3>Devis</h3>
+        <p class="stat-value">{{ quoteCount || 0 }}</p>
+        <p class="stat-change neutral">0% <mat-icon>trending_flat</mat-icon></p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon prospects">
+        <mat-icon>person_add</mat-icon>
+      </div>
+      <div class="stat-details">
+        <h3>Prospects</h3>
+        <p class="stat-value">{{ prospectCount || 0 }}</p>
+        <p class="stat-change positive">+8% <mat-icon>trending_up</mat-icon></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Activity Section -->
+  <div class="recent-activity-container">
+    <div class="section-header">
+      <h2>Activité Récente</h2>
+      <button mat-button color="primary">Voir tout</button>
+    </div>
+    
+    <div class="activity-list">
+      <div class="activity-item" *ngFor="let activity of recentActivities">
+        <div class="activity-icon" [ngClass]="activity.type">
+          <mat-icon>{{ getActivityIcon(activity.type) }}</mat-icon>
+        </div>
+        <div class="activity-details">
+          <p class="activity-title">{{ activity.title }}</p>
+          <p class="activity-description">{{ activity.description }}</p>
+        </div>
+        <div class="activity-time">
+          {{ activity.timestamp | date:'shortTime' }}
+        </div>
+      </div>
+      
+      <div class="no-activity" *ngIf="!recentActivities?.length">
+        <p>Aucune activité récente</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions Section -->
+  <div class="quick-actions-container">
+    <div class="section-header">
+      <h2>Actions Rapides</h2>
+    </div>
+    
+    <div class="quick-actions-grid">
+      <button mat-raised-button color="primary" class="action-button" routerLink="/clients/new">
+        <mat-icon>person_add</mat-icon>
+        <span>Nouveau Client</span>
+      </button>
+      
+      <button mat-raised-button color="primary" class="action-button" routerLink="/quotes/new">
+        <mat-icon>post_add</mat-icon>
+        <span>Nouveau Devis</span>
+      </button>
+      
+      <button mat-raised-button color="primary" class="action-button" routerLink="/products/new">
+        <mat-icon>add_box</mat-icon>
+        <span>Nouveau Produit</span>
+      </button>
+      
+      <button mat-raised-button color="primary" class="action-button" routerLink="/prospects/new">
+        <mat-icon>person_add_alt</mat-icon>
+        <span>Nouveau Prospect</span>
+      </button>
+    </div>
+  </div>
+</div>

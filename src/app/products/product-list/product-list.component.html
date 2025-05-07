@@ -1,0 +1,55 @@
+<div class="product-list-container">
+  <h2>Products</h2>
+  <button mat-raised-button color="primary" routerLink="/products/new">Add Product</button>
+
+  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <table mat-table [dataSource]="products" class="mat-elevation-z8" *ngIf="!isLoading && !error && products.length">
+    <!-- ID Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> ID </th>
+      <td mat-cell *matCellDef="let product"> {{product.id}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let product"> {{product.libelle}} </td>
+    </ng-container>
+
+    <!-- Description Column -->
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef> Description </th>
+      <td mat-cell *matCellDef="let product"> {{product.description}} </td>
+    </ng-container>
+
+    <!-- Price Column -->
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef> Price </th>
+      <td mat-cell *matCellDef="let product"> {{product.prixDetail | currency}} </td>
+    </ng-container>
+
+    <!-- Quantity Column -->
+    <ng-container matColumnDef="quantity">
+      <th mat-header-cell *matHeaderCellDef> Quantity </th>
+      <td mat-cell *matCellDef="let product"> {{product.quantity}} </td>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <td mat-cell *matCellDef="let product">
+        <button mat-button color="accent" [routerLink]="['../product-detail', product.id]">View</button>
+        <button mat-button color="warn">Delete</button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="['id', 'name', 'description', 'price', 'quantity', 'actions']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['id', 'name', 'description', 'price', 'quantity', 'actions'];"></tr>
+  </table>
+
+  <div *ngIf="!isLoading && !error && !products.length">
+    <p>No products found.</p>
+  </div>
+</div>

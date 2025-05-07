@@ -1,0 +1,22 @@
+.quote-detail-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+mat-card {
+  margin-top: 1.5rem;
+}
+.error {
+  color: #d32f2f;
+  margin: 1rem 0;
+}
+mat-progress-spinner {
+  display: block;
+  margin: 2rem auto;
+}
+button[mat-button] {
+  margin-bottom: 1rem;
+}

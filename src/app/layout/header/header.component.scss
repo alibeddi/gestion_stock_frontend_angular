@@ -1,0 +1,24 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.app-title {
+  margin-left: 8px;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.user-controls {
+  display: flex;
+  align-items: center;
+}
+
+.username {
+  margin: 0 8px;
+}
+
+@media (max-width: 599px) {
+  .username {
+    display: none;
+  }
+}
