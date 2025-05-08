@@ -2,7 +2,7 @@
   <!-- Header Section -->
   <div class="dashboard-header">
     <h1>Dashboard</h1>
-    <div class="date-display">{{ currentDate | date:'EEEE, MMMM d, y' }}</div>
+    <div class="date-display">{{ currentDate | date : "EEEE, MMMM d, y" }}</div>
   </div>
 
   <!-- Stats Cards Section -->
@@ -14,7 +14,9 @@
       <div class="stat-details">
         <h3>Clients</h3>
         <p class="stat-value">{{ clientCount || 0 }}</p>
-        <p class="stat-change positive">+5% <mat-icon>trending_up</mat-icon></p>
+        <p class="stat-change positive">
+          +10% <mat-icon>trending_up</mat-icon>
+        </p>
       </div>
     </div>
 
@@ -25,7 +27,9 @@
       <div class="stat-details">
         <h3>Produits</h3>
         <p class="stat-value">{{ productCount || 0 }}</p>
-        <p class="stat-change positive">+12% <mat-icon>trending_up</mat-icon></p>
+        <p class="stat-change positive">
+          +12% <mat-icon>trending_up</mat-icon>
+        </p>
       </div>
     </div>
 
@@ -58,7 +62,7 @@
       <h2>Activité Récente</h2>
       <button mat-button color="primary">Voir tout</button>
     </div>
-    
+
     <div class="activity-list">
       <div class="activity-item" *ngFor="let activity of recentActivities">
         <div class="activity-icon" [ngClass]="activity.type">
@@ -69,10 +73,10 @@
           <p class="activity-description">{{ activity.description }}</p>
         </div>
         <div class="activity-time">
-          {{ activity.timestamp | date:'shortTime' }}
+          {{ activity.timestamp | date : "shortTime" }}
         </div>
       </div>
-      
+
       <div class="no-activity" *ngIf="!recentActivities?.length">
         <p>Aucune activité récente</p>
       </div>
@@ -84,24 +88,44 @@
     <div class="section-header">
       <h2>Actions Rapides</h2>
     </div>
-    
+
     <div class="quick-actions-grid">
-      <button mat-raised-button color="primary" class="action-button" routerLink="/clients/new">
+      <button
+        mat-raised-button
+        color="primary"
+        class="action-button"
+        routerLink="/clients/new"
+      >
         <mat-icon>person_add</mat-icon>
         <span>Nouveau Client</span>
       </button>
-      
-      <button mat-raised-button color="primary" class="action-button" routerLink="/quotes/new">
+
+      <button
+        mat-raised-button
+        color="primary"
+        class="action-button"
+        routerLink="/quotes/new"
+      >
         <mat-icon>post_add</mat-icon>
         <span>Nouveau Devis</span>
       </button>
-      
-      <button mat-raised-button color="primary" class="action-button" routerLink="/products/new">
+
+      <button
+        mat-raised-button
+        color="primary"
+        class="action-button"
+        routerLink="/products/new"
+      >
         <mat-icon>add_box</mat-icon>
         <span>Nouveau Produit</span>
       </button>
-      
-      <button mat-raised-button color="primary" class="action-button" routerLink="/prospects/new">
+
+      <button
+        mat-raised-button
+        color="primary"
+        class="action-button"
+        routerLink="/prospects/new"
+      >
         <mat-icon>person_add_alt</mat-icon>
         <span>Nouveau Prospect</span>
       </button>
