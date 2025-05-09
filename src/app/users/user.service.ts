@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
 
 export interface User {
   id: number;
@@ -10,9 +10,9 @@ export interface User {
   // Add more fields as needed
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class UserService {
-  private BASE_URL = 'http://localhost:8080/api/api/users'; // Update if needed
+  private BASE_URL = "http://localhost:8080/api/users"; // Update if needed
 
   constructor(private http: HttpClient) {}
 

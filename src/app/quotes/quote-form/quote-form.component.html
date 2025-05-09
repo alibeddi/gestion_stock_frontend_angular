@@ -1,49 +1,86 @@
 <div class="quote-form-container">
-  <h2>{{ isEdit ? 'Edit Quote' : 'Add Quote' }}</h2>
+  <h2>{{ isEdit ? "Edit Quote" : "Add Quote" }}</h2>
 
-  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+  <mat-progress-spinner
+    *ngIf="isLoading"
+    mode="indeterminate"
+  ></mat-progress-spinner>
   <div *ngIf="error" class="error">{{ error }}</div>
 
   <form [formGroup]="quoteForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
     <mat-form-field class="full-width">
-      <mat-label>Client Name</mat-label>
-      <input matInput formControlName="clientName" required />
-      <mat-error *ngIf="quoteForm.get('clientName')?.hasError('required')">
-        Client Name is required
+      <mat-label>Sujet</mat-label>
+      <input matInput formControlName="sujet" required />
+      <mat-error *ngIf="quoteForm.get('sujet')?.hasError('required')">
+        Sujet is required
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field class="full-width">
-      <mat-label>Total</mat-label>
-      <input matInput formControlName="total" required type="number" min="0" />
-      <mat-error *ngIf="quoteForm.get('total')?.hasError('required')">
-        Total is required
-      </mat-error>
-      <mat-error *ngIf="quoteForm.get('total')?.hasError('min')">
-        Total must be positive
-      </mat-error>
-    </mat-form-field>
+    <div class="form-row">
+      <mat-form-field>
+        <mat-label>Client ID</mat-label>
+        <input matInput formControlName="clientId" type="number" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Prospect ID</mat-label>
+        <input matInput formControlName="prospectId" type="number" />
+      </mat-form-field>
+    </div>
 
     <mat-form-field class="full-width">
-      <mat-label>Date</mat-label>
-      <input matInput formControlName="date" required type="date" />
-      <mat-error *ngIf="quoteForm.get('date')?.hasError('required')">
-        Date is required
-      </mat-error>
+      <mat-label>Échéance</mat-label>
+      <input matInput formControlName="echeance" type="date" />
     </mat-form-field>
 
+    <div class="form-row">
+      <mat-form-field>
+        <mat-label>Mode de Livraison</mat-label>
+        <mat-select formControlName="modeLivraison">
+          <mat-option value="">Non défini</mat-option>
+          <mat-option *ngFor="let mode of modesLivraison" [value]="mode">
+            {{ mode }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Délai de Livraison</mat-label>
+        <mat-select formControlName="delaiLivraison">
+          <mat-option value="">Non défini</mat-option>
+          <mat-option *ngFor="let delai of delaisLivraison" [value]="delai">
+            {{ delai }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
     <mat-form-field class="full-width">
-      <mat-label>Status</mat-label>
-      <input matInput formControlName="status" required />
-      <mat-error *ngIf="quoteForm.get('status')?.hasError('required')">
-        Status is required
-      </mat-error>
+      <mat-label>Mode de Paiement</mat-label>
+      <mat-select formControlName="modePaiement">
+        <mat-option value="">Non défini</mat-option>
+        <mat-option *ngFor="let mode of modesPaiement" [value]="mode">
+          {{ mode }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
 
     <div class="button-container">
-      <button mat-stroked-button color="primary" type="button" (click)="cancel()">Cancel</button>
-      <button mat-raised-button color="accent" type="submit" [disabled]="quoteForm.invalid || isLoading">
-        {{ isEdit ? 'Update' : 'Create' }}
+      <button
+        mat-stroked-button
+        color="primary"
+        type="button"
+        (click)="cancel()"
+      >
+        Cancel
+      </button>
+      <button
+        mat-raised-button
+        color="accent"
+        type="submit"
+        [disabled]="quoteForm.invalid || isLoading"
+      >
+        {{ isEdit ? "Update" : "Create" }}
       </button>
     </div>
   </form>

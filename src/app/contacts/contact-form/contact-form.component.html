@@ -1,0 +1,134 @@
+<div class="container">
+  <div class="header">
+    <h1>{{ isEditMode ? "Modifier le contact" : "Ajouter un contact" }}</h1>
+  </div>
+
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+    <mat-card>
+      <mat-card-content>
+        <h2>Informations personnelles</h2>
+
+        <div class="form-row two-columns">
+          <mat-form-field appearance="outline">
+            <mat-label>Nom</mat-label>
+            <input matInput formControlName="nom" required />
+            <mat-error *ngIf="contactForm.get('nom')?.hasError('required')">
+              Le nom est obligatoire
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Prénom</mat-label>
+            <input matInput formControlName="prenom" />
+          </mat-form-field>
+        </div>
+
+        <div class="form-row two-columns">
+          <mat-form-field appearance="outline">
+            <mat-label>Fonction</mat-label>
+            <input matInput formControlName="fonction" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Société</mat-label>
+            <input matInput formControlName="nomSociete" />
+          </mat-form-field>
+        </div>
+
+        <h2>Coordonnées</h2>
+
+        <div class="form-row two-columns">
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="email" required />
+            <mat-error *ngIf="contactForm.get('email')?.hasError('required')">
+              L'email est obligatoire
+            </mat-error>
+            <mat-error *ngIf="contactForm.get('email')?.hasError('email')">
+              Veuillez entrer une adresse email valide
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Email secondaire</mat-label>
+            <input matInput type="email" formControlName="emailSecondaire" />
+            <mat-error
+              *ngIf="contactForm.get('emailSecondaire')?.hasError('email')"
+            >
+              Veuillez entrer une adresse email valide
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row three-columns">
+          <mat-form-field appearance="outline">
+            <mat-label>Mobile</mat-label>
+            <input matInput formControlName="mobile" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Téléphone</mat-label>
+            <input matInput formControlName="telephone" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Fax</mat-label>
+            <input matInput formControlName="fax" />
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Site web</mat-label>
+            <input matInput formControlName="siteWeb" />
+          </mat-form-field>
+        </div>
+
+        <h2>Adresse</h2>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Rue</mat-label>
+            <textarea matInput formControlName="adresseRue" rows="2"></textarea>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row three-columns">
+          <mat-form-field appearance="outline">
+            <mat-label>Code postal</mat-label>
+            <input matInput formControlName="adresseCodePostal" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Ville</mat-label>
+            <input matInput formControlName="adresseVille" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Pays</mat-label>
+            <input matInput formControlName="adressePays" />
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions align="end">
+        <button type="button" mat-button (click)="onCancel()">Annuler</button>
+        <button
+          type="submit"
+          mat-raised-button
+          color="primary"
+          [disabled]="contactForm.invalid || isSubmitting"
+        >
+          <mat-spinner diameter="20" *ngIf="isSubmitting"></mat-spinner>
+          <span *ngIf="!isSubmitting">{{
+            isEditMode ? "Mettre à jour" : "Enregistrer"
+          }}</span>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+</div>
