@@ -1,53 +1,65 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Prospect } from '../../models/prospect';
+import { HttpClient, HttpParams } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
+import { Prospect } from "../../models/prospect";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class ProspectService {
-  private readonly BASE_URL = 'http://localhost:8080/api/api/prospects';
+  private readonly BASE_URL = "/api/prospects";
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getProspects(
-    page: number = 0, 
-    size: number = 10, 
-    sort: string = 'dateCreation,desc',
+    page: number = 0,
+    size: number = 10,
+    sort: string = "dateCreation,desc",
     search?: string,
     statut?: string
   ): Observable<any> {
     let params = new HttpParams()
-      .set('page', page.toString())
-      .set('size', size.toString())
-      .set('sort', sort);
-    
+      .set("page", page.toString())
+      .set("size", size.toString())
+      .set("sort", sort);
+
     if (search) {
-      params = params.set('search', search);
+      params = params.set("search", search);
     }
-    
+
     if (statut) {
-      params = params.set('statut', statut);
+      params = params.set("statut", statut);
     }
-    
+
     return this.http.get<any>(this.BASE_URL, { params });
   }
 
-  getProspectById(id: number): Observable<Prospect> {
-    return this.http.get<Prospect>(`${this.BASE_URL}/${id}`);
+  getProspectById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.BASE_URL}/${id}`);
   }
 
-  createProspect(prospect: Prospect): Observable<Prospect> {
-    return this.http.post<Prospect>(this.BASE_URL, prospect);
+  getProspectByCode(code: string): Observable<any> {
+    return this.http.get<any>(`${this.BASE_URL}/code/${code}`);
   }
 
-  updateProspect(id: number, prospect: Prospect): Observable<Prospect> {
-    return this.http.put<Prospect>(`${this.BASE_URL}/${id}`, prospect);
+  getProspectsBySource(sourceId: number): Observable<any> {
+    return this.http.get<any>(`${this.BASE_URL}/source/${sourceId}`);
   }
 
-  deleteProspect(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.BASE_URL}/${id}`);
+  getProspectsByStatus(statut: string): Observable<any> {
+    return this.http.get<any>(`${this.BASE_URL}/statut/${statut}`);
+  }
+
+  createProspect(prospect: Prospect): Observable<any> {
+    return this.http.post<any>(this.BASE_URL, prospect);
+  }
+
+  updateProspect(id: number, prospect: Prospect): Observable<any> {
+    return this.http.put<any>(`${this.BASE_URL}/${id}`, prospect);
+  }
+
+  deleteProspect(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.BASE_URL}/${id}`);
   }
 
   convertToClient(id: number): Observable<any> {

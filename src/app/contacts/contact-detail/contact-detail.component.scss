@@ -1,0 +1,73 @@
+.container {
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+
+  .actions {
+    button {
+      margin-left: 10px;
+    }
+  }
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0;
+}
+
+.contact-name {
+  margin-bottom: 5px;
+  font-size: 2rem;
+}
+
+h3 {
+  margin-top: 0;
+  color: rgba(0, 0, 0, 0.6);
+  font-weight: normal;
+  margin-bottom: 20px;
+}
+
+.detail-card {
+  margin-bottom: 20px;
+}
+
+.detail-row {
+  display: flex;
+  margin-bottom: 15px;
+
+  .detail-label {
+    width: 150px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .detail-value {
+    flex: 1;
+  }
+}
+
+.address {
+  p {
+    margin: 5px 0;
+  }
+}
+
+.not-found {
+  text-align: center;
+  margin-top: 50px;
+
+  h2 {
+    margin-bottom: 10px;
+  }
+
+  p {
+    margin-bottom: 20px;
+    color: rgba(0, 0, 0, 0.6);
+  }
+}

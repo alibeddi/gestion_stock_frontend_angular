@@ -1,0 +1,123 @@
+<div class="container">
+  <div class="header">
+    <button mat-button (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon> Retour à la liste
+    </button>
+    <div class="actions">
+      <button mat-raised-button color="primary" (click)="editContact()">
+        <mat-icon>edit</mat-icon> Modifier
+      </button>
+      <button mat-raised-button color="warn" (click)="deleteContact()">
+        <mat-icon>delete</mat-icon> Supprimer
+      </button>
+    </div>
+  </div>
+
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div *ngIf="!isLoading && contact">
+    <h1 class="contact-name">{{ contact.prenom }} {{ contact.nom }}</h1>
+    <h3 *ngIf="contact.fonction || contact.nomSociete">
+      <span *ngIf="contact.fonction">{{ contact.fonction }}</span>
+      <span *ngIf="contact.fonction && contact.nomSociete"> - </span>
+      <span *ngIf="contact.nomSociete">{{ contact.nomSociete }}</span>
+    </h3>
+
+    <mat-card class="detail-card">
+      <mat-card-header>
+        <mat-card-title>Coordonnées</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="detail-row" *ngIf="contact.email">
+          <div class="detail-label">Email:</div>
+          <div class="detail-value">{{ contact.email }}</div>
+        </div>
+        <div class="detail-row" *ngIf="contact.emailSecondaire">
+          <div class="detail-label">Email secondaire:</div>
+          <div class="detail-value">{{ contact.emailSecondaire }}</div>
+        </div>
+        <div class="detail-row" *ngIf="contact.mobile">
+          <div class="detail-label">Mobile:</div>
+          <div class="detail-value">{{ contact.mobile }}</div>
+        </div>
+        <div class="detail-row" *ngIf="contact.telephone">
+          <div class="detail-label">Téléphone:</div>
+          <div class="detail-value">{{ contact.telephone }}</div>
+        </div>
+        <div class="detail-row" *ngIf="contact.fax">
+          <div class="detail-label">Fax:</div>
+          <div class="detail-value">{{ contact.fax }}</div>
+        </div>
+        <div class="detail-row" *ngIf="contact.siteWeb">
+          <div class="detail-label">Site web:</div>
+          <div class="detail-value">
+            <a [href]="contact.siteWeb" target="_blank">{{
+              contact.siteWeb
+            }}</a>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card
+      class="detail-card"
+      *ngIf="
+        contact.adresseRue ||
+        contact.adresseVille ||
+        contact.adresseCodePostal ||
+        contact.adressePays
+      "
+    >
+      <mat-card-header>
+        <mat-card-title>Adresse</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="address">
+          <p *ngIf="contact.adresseRue">{{ contact.adresseRue }}</p>
+          <p *ngIf="contact.adresseCodePostal || contact.adresseVille">
+            <span *ngIf="contact.adresseCodePostal">{{
+              contact.adresseCodePostal
+            }}</span>
+            <span *ngIf="contact.adresseVille">
+              {{ contact.adresseVille }}</span
+            >
+          </p>
+          <p *ngIf="contact.adressePays">{{ contact.adressePays }}</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card
+      class="detail-card"
+      *ngIf="contact.dateCreation || contact.dateModification"
+    >
+      <mat-card-header>
+        <mat-card-title>Informations système</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="detail-row" *ngIf="contact.dateCreation">
+          <div class="detail-label">Créé le:</div>
+          <div class="detail-value">
+            {{ contact.dateCreation | date : "dd/MM/yyyy HH:mm" }}
+          </div>
+        </div>
+        <div class="detail-row" *ngIf="contact.dateModification">
+          <div class="detail-label">Modifié le:</div>
+          <div class="detail-value">
+            {{ contact.dateModification | date : "dd/MM/yyyy HH:mm" }}
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div *ngIf="!isLoading && !contact" class="not-found">
+    <h2>Contact introuvable</h2>
+    <p>Le contact que vous recherchez n'existe pas ou a été supprimé.</p>
+    <button mat-raised-button color="primary" (click)="goBack()">
+      Retour à la liste des contacts
+    </button>
+  </div>
+</div>

@@ -1,0 +1,134 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>{{ isEditMode ? "Modifier le prospect" : "Nouveau prospect" }}</h1>
+    <div class="actions">
+      <button
+        mat-flat-button
+        color="primary"
+        (click)="saveProspect()"
+        [disabled]="prospectForm.invalid || isLoading"
+      >
+        <mat-icon>save</mat-icon> Enregistrer
+      </button>
+      <button mat-stroked-button (click)="cancel()">
+        <mat-icon>cancel</mat-icon> Annuler
+      </button>
+    </div>
+  </div>
+
+  <mat-card class="form-card">
+    <mat-card-content>
+      <div *ngIf="isLoading" class="loading-indicator">
+        <mat-spinner diameter="50"></mat-spinner>
+      </div>
+
+      <form [formGroup]="prospectForm" *ngIf="!isLoading">
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nom / Raison sociale</mat-label>
+            <input matInput formControlName="nom" required />
+            <mat-error *ngIf="prospectForm.get('nom')?.hasError('required')">
+              Le nom est obligatoire
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" type="email" />
+            <mat-error *ngIf="prospectForm.get('email')?.hasError('email')">
+              Veuillez saisir un email valide
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Téléphone</mat-label>
+            <input matInput formControlName="telephone" />
+          </mat-form-field>
+        </div>
+
+        <div formGroupName="adresse">
+          <h3>Adresse</h3>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Rue</mat-label>
+              <input matInput formControlName="rue" />
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Ville</mat-label>
+              <input matInput formControlName="ville" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Code postal</mat-label>
+              <input matInput formControlName="codePostal" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Pays</mat-label>
+              <input matInput formControlName="pays" />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Secteur d'activité</mat-label>
+            <mat-select formControlName="secteurActiviteId">
+              <mat-option [value]="null">Non spécifié</mat-option>
+              <!-- Options will be loaded dynamically -->
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Source de prospection</mat-label>
+            <mat-select formControlName="sourceProspectionId">
+              <mat-option [value]="null">Non spécifié</mat-option>
+              <!-- Options will be loaded dynamically -->
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Statut</mat-label>
+            <mat-select formControlName="statut">
+              <mat-option value="NOUVEAU">Nouveau</mat-option>
+              <mat-option value="CONTACT_PRIS">Contact pris</mat-option>
+              <mat-option value="RENDEZ_VOUS">Rendez-vous</mat-option>
+              <mat-option value="PROPOSITION">Proposition</mat-option>
+              <mat-option value="NEGOCIATION">Négociation</mat-option>
+              <mat-option value="GAGNE">Gagné</mat-option>
+              <mat-option value="PERDU">Perdu</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Potentiel</mat-label>
+            <mat-select formControlName="potentiel">
+              <mat-option value="FAIBLE">Faible</mat-option>
+              <mat-option value="MOYEN">Moyen</mat-option>
+              <mat-option value="ELEVE">Élevé</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Commentaire</mat-label>
+            <textarea
+              matInput
+              formControlName="commentaire"
+              rows="4"
+            ></textarea>
+          </mat-form-field>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

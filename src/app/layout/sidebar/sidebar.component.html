@@ -10,6 +10,7 @@
         mat-list-item
         [routerLink]="item.route"
         routerLinkActive="active-link"
+        (click)="navigate(item.route)"
       >
         <mat-icon>{{ item.icon }}</mat-icon>
         <span>{{ item.name }}</span>

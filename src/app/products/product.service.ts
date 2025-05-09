@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
 
 export interface Product {
   id: number;
@@ -13,9 +13,9 @@ export interface Product {
   quantity: number;
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class ProductService {
-  private readonly BASE_URL = 'http://localhost:8080/api/api/produits'; // Adjust if your backend URL differs
+  private readonly BASE_URL = "http://localhost:8080/api/api/produits"; // Adjust if your backend URL differs
 
   constructor(private http: HttpClient) {}
 
