@@ -15,7 +15,7 @@ export interface Product {
 
 @Injectable({ providedIn: "root" })
 export class ProductService {
-  private readonly BASE_URL = "http://localhost:8080/api/api/produits"; // Adjust if your backend URL differs
+  private readonly BASE_URL = "http://localhost:8080/api/produits"; // Adjust if your backend URL differs
 
   constructor(private http: HttpClient) {}
 

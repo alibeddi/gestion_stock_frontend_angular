@@ -1,16 +1,16 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { LoginRequest } from '../../models/auth/login-request';
-import { RegisterRequest } from '../../models/auth/register-request';
-import { TokenService } from '../token/token.service';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
+import { tap } from "rxjs/operators";
+import { LoginRequest } from "../../models/auth/login-request";
+import { RegisterRequest } from "../../models/auth/register-request";
+import { TokenService } from "../token/token.service";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class AuthService {
-  private readonly BASE_URL = 'http://localhost:8080/api/api/auth';
+  private readonly BASE_URL = "http://localhost:8080/api/auth";
 
   constructor(private http: HttpClient, private tokenService: TokenService) {}
 
@@ -39,10 +39,10 @@ export class AuthService {
       mobile: registerRequest.mobile,
       titre: registerRequest.titre,
       adresse: registerRequest.adresse,
-      roles: registerRequest.roles
+      roles: registerRequest.roles,
       // username field removed
     };
-    
+
     return this.http.post<any>(`${this.BASE_URL}/register`, requestData);
   }
 
@@ -72,10 +72,10 @@ export class AuthService {
   }
 
   isAdmin(): boolean {
-    return this.hasRole('ADMIN');
+    return this.hasRole("ADMIN");
   }
 
   isManager(): boolean {
-    return this.hasRole('MANAGER');
+    return this.hasRole("MANAGER");
   }
 }

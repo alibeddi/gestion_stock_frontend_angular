@@ -1,6 +1,10 @@
 import { Component, OnInit } from "@angular/core";
-import { NavigationEnd, Router } from "@angular/router";
-import { filter } from "rxjs/operators";
+import {
+  NavigationEnd,
+  NavigationError,
+  NavigationStart,
+  Router,
+} from "@angular/router";
 import { environment } from "../../../environments/environment";
 import { AuthService } from "../../core/services/auth/auth.service";
 
@@ -37,37 +41,38 @@ export class SidebarComponent implements OnInit {
   currentYear: number = new Date().getFullYear();
 
   constructor(private router: Router, private authService: AuthService) {
-    // Subscribe to all router events to debug
+    // Subscribe to all router events with more specific tracking
     this.router.events.subscribe((event) => {
-      console.log("Router Event:", event);
+      console.log("Router Event Type:", event.constructor.name);
+
+      if (event instanceof NavigationStart) {
+        console.log("Navigation Started:", event.url);
+      }
+
+      if (event instanceof NavigationEnd) {
+        console.log("Navigation Ended:", event.url);
+        // Update current route when navigation ends
+        this.currentRoute = event.urlAfterRedirects;
+      }
+
+      if (event instanceof NavigationError) {
+        console.error("Navigation Error:", event.error);
+      }
     });
   }
 
   ngOnInit(): void {
-    // Track current route for highlighting active navigation item
-    this.router.events
-      .pipe(
-        filter(
-          (event): event is NavigationEnd => event instanceof NavigationEnd
-        )
-      )
-      .subscribe((event: NavigationEnd) => {
-        console.log("Navigation End Event:", event);
-        this.currentRoute = event.urlAfterRedirects;
-      });
-
     // Initialize current route
     this.currentRoute = this.router.url;
     console.log("Initial Route:", this.currentRoute);
   }
 
-  navigate(route: string): void {
-    // Force navigation programmatically in addition to routerLink
-    console.log("Navigating to:", route);
-    this.router.navigateByUrl(route).then(
-      (success) => console.log("Navigation result:", success),
-      (error) => console.error("Navigation error:", error)
-    );
+  navigate(route: string, event?: Event): void {
+    // Don't prevent default behavior - this might be causing the issue
+    // Let Angular's router handle the navigation naturally
+
+    // Log navigation attempt
+    console.log("Attempting to navigate to:", route);
   }
 
   hasPermission(permission?: string): boolean {
