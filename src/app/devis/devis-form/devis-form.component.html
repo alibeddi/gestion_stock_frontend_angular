@@ -1,0 +1,146 @@
+<div class="container">
+  <div class="header">
+    <h1>{{ editMode ? "Modifier" : "Créer" }} un devis</h1>
+    <button mat-raised-button color="primary" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+      Retour à la liste
+    </button>
+  </div>
+
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+
+  <div class="error-container" *ngIf="error">
+    <div class="error-message">
+      <mat-icon color="warn">error</mat-icon>
+      <span>{{ error }}</span>
+    </div>
+  </div>
+
+  <mat-card *ngIf="!isLoading">
+    <form [formGroup]="devisForm" (ngSubmit)="onSubmit()">
+      <mat-card-content>
+        <div class="form-section">
+          <h2>Informations générales</h2>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Sujet</mat-label>
+              <input
+                matInput
+                formControlName="sujet"
+                placeholder="Entrez le sujet du devis"
+              />
+              <mat-error *ngIf="devisForm.get('sujet')?.hasError('required')">
+                Le sujet est obligatoire
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Client</mat-label>
+              <mat-select formControlName="client">
+                <mat-option [value]="null">Sélectionnez un client</mat-option>
+                <!-- Client options would be added here -->
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Prospect</mat-label>
+              <mat-select formControlName="prospect">
+                <mat-option [value]="null">Sélectionnez un prospect</mat-option>
+                <!-- Prospect options would be added here -->
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Échéance</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker"
+                formControlName="echeance"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="form-section">
+          <h2>Conditions de livraison et paiement</h2>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Délai de livraison</mat-label>
+              <mat-select formControlName="delaiLivraison">
+                <mat-option [value]="null">Sélectionnez un délai</mat-option>
+                <mat-option value="IMMEDIAT">Immédiat</mat-option>
+                <mat-option value="SOUS_24H">Sous 24h</mat-option>
+                <mat-option value="SOUS_48H">Sous 48h</mat-option>
+                <mat-option value="SOUS_72H">Sous 72h</mat-option>
+                <mat-option value="UNE_SEMAINE">Une semaine</mat-option>
+                <mat-option value="DEUX_SEMAINES">Deux semaines</mat-option>
+                <mat-option value="UN_MOIS">Un mois</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Mode de livraison</mat-label>
+              <mat-select formControlName="modeLivraison">
+                <mat-option [value]="null">Sélectionnez un mode</mat-option>
+                <mat-option value="RETRAIT_SUR_PLACE"
+                  >Retrait sur place</mat-option
+                >
+                <mat-option value="LIVRAISON_STANDARD"
+                  >Livraison standard</mat-option
+                >
+                <mat-option value="LIVRAISON_EXPRESS"
+                  >Livraison express</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Mode de paiement</mat-label>
+              <mat-select formControlName="modePaiement">
+                <mat-option [value]="null">Sélectionnez un mode</mat-option>
+                <mat-option value="ESPECES">Espèces</mat-option>
+                <mat-option value="CHEQUE">Chèque</mat-option>
+                <mat-option value="VIREMENT">Virement</mat-option>
+                <mat-option value="CARTE_BANCAIRE">Carte bancaire</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button mat-button type="button" (click)="goBack()">Annuler</button>
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="devisForm.invalid || isSubmitting"
+        >
+          <mat-icon>save</mat-icon>
+          {{ editMode ? "Mettre à jour" : "Enregistrer" }}
+        </button>
+      </mat-card-actions>
+    </form>
+  </mat-card>
+</div>

@@ -24,9 +24,10 @@ export class SidebarComponent implements OnInit {
   navItems: NavItem[] = [
     { name: "Dashboard", icon: "dashboard", route: "/dashboard" },
     { name: "Products", icon: "inventory_2", route: "/products" },
+    { name: "Emballages", icon: "inventory", route: "/emballages" },
     { name: "Clients", icon: "business", route: "/clients" },
     { name: "Prospects", icon: "person_search", route: "/prospects" },
-    { name: "Quotes", icon: "description", route: "/quotes" },
+    { name: "Devis", icon: "description", route: "/devis" },
     { name: "Contacts", icon: "people", route: "/contacts" },
     {
       name: "Users",
@@ -34,6 +35,7 @@ export class SidebarComponent implements OnInit {
       route: "/users",
       requiredPermission: "ADMIN",
     },
+    { name: "Paramètres", icon: "settings", route: "/settings" },
   ];
 
   currentRoute: string = "";

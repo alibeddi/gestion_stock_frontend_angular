@@ -1,5 +1,5 @@
 <div class="product-form-container">
-  <h2>{{ isEdit ? "Edit Product" : "Add Product" }}</h2>
+  <h2>{{ isEdit ? "Modifier le produit" : "Ajouter un produit" }}</h2>
 
   <mat-progress-spinner
     *ngIf="isLoading"
@@ -8,88 +8,176 @@
   <div *ngIf="error" class="error">{{ error }}</div>
 
   <form [formGroup]="productForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
-    <mat-form-field class="full-width">
-      <mat-label>Code</mat-label>
-      <input matInput formControlName="code" required />
-      <mat-error *ngIf="productForm.get('code')?.hasError('required')">
-        Code is required
-      </mat-error>
-    </mat-form-field>
+    <!-- Basic Information Section -->
+    <div class="form-section">
+      <h3>Informations de base</h3>
 
-    <mat-form-field class="full-width">
-      <mat-label>Libellé</mat-label>
-      <input matInput formControlName="libelle" required />
-      <mat-error *ngIf="productForm.get('libelle')?.hasError('required')">
-        Libellé is required
-      </mat-error>
-    </mat-form-field>
+      <div class="form-row">
+        <mat-form-field class="form-field">
+          <mat-label>Code</mat-label>
+          <input matInput formControlName="code" required />
+          <mat-error *ngIf="productForm.get('code')?.hasError('required')">
+            Le code est obligatoire
+          </mat-error>
+        </mat-form-field>
 
-    <mat-form-field class="full-width">
-      <mat-label>Description</mat-label>
-      <textarea matInput formControlName="description"></textarea>
-    </mat-form-field>
+        <mat-form-field class="form-field">
+          <mat-label>Libellé</mat-label>
+          <input matInput formControlName="libelle" required />
+          <mat-error *ngIf="productForm.get('libelle')?.hasError('required')">
+            Le libellé est obligatoire
+          </mat-error>
+        </mat-form-field>
+      </div>
 
-    <mat-form-field class="full-width">
-      <mat-label>Prix de détail</mat-label>
-      <input
-        matInput
-        type="number"
-        formControlName="prixDetail"
-        min="0"
-        required
-      />
-      <mat-error *ngIf="productForm.get('prixDetail')?.hasError('required')">
-        Prix de détail is required
-      </mat-error>
-      <mat-error *ngIf="productForm.get('prixDetail')?.hasError('min')">
-        Prix de détail must be 0 or more
-      </mat-error>
-    </mat-form-field>
+      <div class="form-row">
+        <mat-form-field class="form-field">
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description"></textarea>
+        </mat-form-field>
+      </div>
 
-    <mat-form-field class="full-width">
-      <mat-label>Prix gérant</mat-label>
-      <input
-        matInput
-        type="number"
-        formControlName="prixGerant"
-        min="0"
-        required
-      />
-      <mat-error *ngIf="productForm.get('prixGerant')?.hasError('required')">
-        Prix gérant is required
-      </mat-error>
-      <mat-error *ngIf="productForm.get('prixGerant')?.hasError('min')">
-        Prix gérant must be 0 or more
-      </mat-error>
-    </mat-form-field>
+      <div class="form-row">
+        <mat-form-field class="form-field">
+          <mat-label>Emballage</mat-label>
+          <mat-select formControlName="emballage">
+            <mat-option>Aucun</mat-option>
+            <mat-option *ngFor="let emb of emballages" [value]="emb.id">
+              {{ emb.libelle }} ({{ emb.code }})
+            </mat-option>
+          </mat-select>
+          <mat-spinner *ngIf="loadingEmballages" diameter="20"></mat-spinner>
+        </mat-form-field>
 
-    <mat-form-field class="full-width">
-      <mat-label>Prix de gros</mat-label>
-      <input
-        matInput
-        type="number"
-        formControlName="prixGros"
-        min="0"
-        required
-      />
-      <mat-error *ngIf="productForm.get('prixGros')?.hasError('required')">
-        Prix de gros is required
-      </mat-error>
-      <mat-error *ngIf="productForm.get('prixGros')?.hasError('min')">
-        Prix de gros must be 0 or more
-      </mat-error>
-    </mat-form-field>
+        <mat-form-field class="form-field">
+          <mat-label>Poids (kg)</mat-label>
+          <input
+            matInput
+            type="number"
+            formControlName="poidsKg"
+            min="0"
+            step="0.01"
+          />
+          <mat-error *ngIf="productForm.get('poidsKg')?.hasError('min')">
+            Le poids doit être positif
+          </mat-error>
+        </mat-form-field>
+      </div>
 
-    <mat-form-field class="full-width">
-      <mat-label>Quantity</mat-label>
-      <input matInput type="number" formControlName="quantity" min="0" />
-      <mat-error *ngIf="productForm.get('quantity')?.hasError('required')">
-        Quantity is required
-      </mat-error>
-      <mat-error *ngIf="productForm.get('quantity')?.hasError('min')">
-        Quantity must be 0 or more
-      </mat-error>
-    </mat-form-field>
+      <div class="form-row">
+        <mat-form-field class="form-field">
+          <mat-label>Catégorie</mat-label>
+          <mat-select formControlName="categorie">
+            <mat-option>Aucune</mat-option>
+            <mat-option *ngFor="let cat of categorieOptions" [value]="cat">
+              {{ cat }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="form-field">
+          <mat-label>Type de produit</mat-label>
+          <mat-select formControlName="typeProduit">
+            <mat-option>Aucun</mat-option>
+            <mat-option *ngFor="let type of typeProduitOptions" [value]="type">
+              {{ type }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Pricing Section -->
+    <div class="form-section">
+      <h3>Prix</h3>
+
+      <div class="form-row">
+        <mat-form-field class="form-field">
+          <mat-label>Prix de détail</mat-label>
+          <input
+            matInput
+            type="number"
+            formControlName="prixDetail"
+            min="0"
+            step="0.01"
+            required
+          />
+          <mat-error
+            *ngIf="productForm.get('prixDetail')?.hasError('required')"
+          >
+            Le prix de détail est obligatoire
+          </mat-error>
+          <mat-error *ngIf="productForm.get('prixDetail')?.hasError('min')">
+            Le prix doit être positif ou nul
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="form-field">
+          <mat-label>Prix gérant</mat-label>
+          <input
+            matInput
+            type="number"
+            formControlName="prixGerant"
+            min="0"
+            step="0.01"
+            required
+          />
+          <mat-error
+            *ngIf="productForm.get('prixGerant')?.hasError('required')"
+          >
+            Le prix gérant est obligatoire
+          </mat-error>
+          <mat-error *ngIf="productForm.get('prixGerant')?.hasError('min')">
+            Le prix doit être positif ou nul
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="form-field">
+          <mat-label>Prix de gros</mat-label>
+          <input
+            matInput
+            type="number"
+            formControlName="prixGros"
+            min="0"
+            step="0.01"
+            required
+          />
+          <mat-error *ngIf="productForm.get('prixGros')?.hasError('required')">
+            Le prix de gros est obligatoire
+          </mat-error>
+          <mat-error *ngIf="productForm.get('prixGros')?.hasError('min')">
+            Le prix doit être positif ou nul
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field class="form-field">
+          <mat-label>Quantité</mat-label>
+          <input
+            matInput
+            type="number"
+            formControlName="quantity"
+            min="0"
+            step="1"
+          />
+          <mat-error *ngIf="productForm.get('quantity')?.hasError('min')">
+            La quantité doit être positive ou nulle
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Options Section -->
+    <div class="form-section">
+      <h3>Options</h3>
+
+      <div class="form-row checkboxes">
+        <mat-checkbox formControlName="actif">Produit actif</mat-checkbox>
+        <mat-checkbox formControlName="isPackage">Lot/Package</mat-checkbox>
+        <mat-checkbox formControlName="ecozit">Ecozit</mat-checkbox>
+      </div>
+    </div>
 
     <div class="button-container">
       <button
@@ -98,7 +186,7 @@
         type="button"
         (click)="cancel()"
       >
-        Cancel
+        Annuler
       </button>
       <button
         mat-raised-button
@@ -106,7 +194,7 @@
         type="submit"
         [disabled]="productForm.invalid || isLoading"
       >
-        {{ isEdit ? "Update" : "Create" }}
+        {{ isEdit ? "Mettre à jour" : "Créer" }}
       </button>
     </div>
   </form>

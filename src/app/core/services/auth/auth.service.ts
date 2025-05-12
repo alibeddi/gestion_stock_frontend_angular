@@ -2,8 +2,10 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { tap } from "rxjs/operators";
+import { environment } from "../../../../environments/environment";
 import { LoginRequest } from "../../models/auth/login-request";
 import { RegisterRequest } from "../../models/auth/register-request";
+import { ApiService } from "../api.service";
 import { TokenService } from "../token/token.service";
 
 @Injectable({
@@ -11,8 +13,13 @@ import { TokenService } from "../token/token.service";
 })
 export class AuthService {
   private readonly BASE_URL = "http://localhost:8080/api/auth";
+  private baseUrl = `${environment.apiUrl}`;
 
-  constructor(private http: HttpClient, private tokenService: TokenService) {}
+  constructor(
+    private http: HttpClient,
+    private tokenService: TokenService,
+    private apiService: ApiService
+  ) {}
 
   login(loginRequest: LoginRequest): Observable<any> {
     return this.http.post<any>(`${this.BASE_URL}/login`, loginRequest).pipe(
@@ -59,12 +66,18 @@ export class AuthService {
     return this.tokenService.getToken() !== null;
   }
 
-  getCurrentUser(): any {
+  // Get the cached user data from token service
+  getCachedUser(): any {
     return this.tokenService.getUser();
   }
 
+  // Make an API call to get the current user data
+  getCurrentUser(): Observable<any> {
+    return this.apiService.get<any>(`${this.baseUrl}/users/me`);
+  }
+
   hasRole(role: string): boolean {
-    const user = this.getCurrentUser();
+    const user = this.getCachedUser();
     if (!user || !user.roles) {
       return false;
     }
@@ -77,5 +90,16 @@ export class AuthService {
 
   isManager(): boolean {
     return this.hasRole("MANAGER");
+  }
+
+  changePassword(passwordData: {
+    currentPassword: string;
+    newPassword: string;
+    confirmPassword: string;
+  }): Observable<any> {
+    return this.apiService.post<any>(
+      `${this.baseUrl}/auth/change-password`,
+      passwordData
+    );
   }
 }

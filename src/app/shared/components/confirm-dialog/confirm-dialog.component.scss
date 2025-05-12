@@ -1,1 +1,15 @@
 // Styles for confirm dialog
+
+h2 {
+  margin: 0;
+  font-weight: 500;
+}
+
+p {
+  margin: 16px 0;
+  line-height: 1.5;
+}
+
+[mat-dialog-actions] {
+  padding: 8px 0;
+}

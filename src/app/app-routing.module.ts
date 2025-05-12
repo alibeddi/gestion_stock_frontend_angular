@@ -35,9 +35,9 @@ const routes: Routes = [
           import("./products/products.module").then((m) => m.ProductsModule),
       },
       {
-        path: "quotes",
+        path: "devis",
         loadChildren: () =>
-          import("./quotes/quotes.module").then((m) => m.QuotesModule),
+          import("./devis/devis.module").then((m) => m.DevisModule),
       },
       {
         path: "contacts",
@@ -50,11 +50,21 @@ const routes: Routes = [
           import("./users/users.module").then((m) => m.UsersModule),
         data: { roles: ["ADMIN"] },
       },
+      {
+        path: "emballages",
+        loadChildren: () =>
+          import("./emballage/emballage.module").then((m) => m.EmballageModule),
+      },
     ],
   },
   {
     path: "auth",
     loadChildren: () => import("./auth/auth.module").then((m) => m.AuthModule),
+  },
+  {
+    path: "settings",
+    loadChildren: () =>
+      import("./settings/settings.module").then((m) => m.SettingsModule),
   },
   {
     path: "**",

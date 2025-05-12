@@ -1,0 +1,91 @@
+<div class="container">
+  <div class="header">
+    <h1>Détails de l'emballage</h1>
+    <button mat-raised-button color="primary" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+      Retour à la liste
+    </button>
+  </div>
+
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+
+  <div class="error-container" *ngIf="error">
+    <mat-card>
+      <mat-card-content>
+        <div class="error-message">
+          <mat-icon color="warn">error</mat-icon>
+          <span>{{ error }}</span>
+        </div>
+        <button mat-raised-button color="primary" (click)="goBack()">
+          Retour à la liste
+        </button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-card *ngIf="emballage && !isLoading && !error">
+    <mat-card-header>
+      <mat-card-title>{{ emballage.libelle }}</mat-card-title>
+      <mat-card-subtitle>Code: {{ emballage.code }}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="detail-section">
+        <h2>Informations générales</h2>
+        <div class="detail-grid">
+          <div class="detail-item">
+            <span class="detail-label">Code:</span>
+            <span class="detail-value">{{ emballage.code }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Libellé:</span>
+            <span class="detail-value">{{ emballage.libelle }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Poids:</span>
+            <span class="detail-value">{{
+              emballage.poids
+                ? (emballage.poids | number : "1.2-2") + " kg"
+                : "Non spécifié"
+            }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Type d'emballage:</span>
+            <span class="detail-value">{{
+              emballage.typeEmballage || "Non spécifié"
+            }}</span>
+          </div>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="detail-section">
+        <h2>Informations système</h2>
+        <div class="detail-grid">
+          <div class="detail-item">
+            <span class="detail-label">Date de création:</span>
+            <span class="detail-value">{{
+              formatDate(emballage.dateCreation)
+            }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Dernière modification:</span>
+            <span class="detail-value">{{
+              formatDate(emballage.dateModification)
+            }}</span>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button mat-raised-button color="accent" (click)="editEmballage()">
+        <mat-icon>edit</mat-icon>
+        Modifier
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

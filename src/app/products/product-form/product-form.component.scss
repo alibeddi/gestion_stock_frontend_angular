@@ -1,31 +1,83 @@
 .product-form-container {
-  max-width: 500px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-h2 {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-.full-width {
-  width: 100%;
-  margin-bottom: 18px;
-}
-.button-container {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-  margin-top: 1.5rem;
-}
-.error {
-  color: #d32f2f;
-  margin: 1rem 0;
-  text-align: center;
-}
-mat-progress-spinner {
-  display: block;
-  margin: 2rem auto;
+  padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+
+  h2 {
+    margin-bottom: 20px;
+    color: #3f51b5;
+    font-weight: 500;
+  }
+
+  h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    color: #3f51b5;
+    font-weight: 500;
+    font-size: 18px;
+  }
+
+  .error {
+    color: #f44336;
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 4px;
+    background-color: rgba(244, 67, 54, 0.1);
+  }
+
+  mat-progress-spinner {
+    margin: 20px auto;
+  }
+
+  .form-section {
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 16px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &.checkboxes {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+  }
+
+  .form-field {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  mat-checkbox {
+    margin-right: 16px;
+  }
+
+  @media (max-width: 768px) {
+    .form-row {
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .form-field {
+      width: 100%;
+    }
+  }
 }

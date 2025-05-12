@@ -1,0 +1,24 @@
+<div class="settings-container">
+  <div class="settings-header">
+    <h1>Paramètres</h1>
+  </div>
+
+  <div class="settings-content">
+    <div class="settings-sidebar">
+      <mat-list>
+        <mat-list-item
+          *ngFor="let link of navLinks; let i = index"
+          [class.active]="activeTab === i"
+          (click)="onTabChange(i)"
+        >
+          <mat-icon matListItemIcon>{{ link.icon }}</mat-icon>
+          <span matListItemTitle>{{ link.label }}</span>
+        </mat-list-item>
+      </mat-list>
+    </div>
+
+    <div class="settings-main">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,117 @@
+<div class="settings-section">
+  <h2 class="section-title">Paramètres de sécurité</h2>
+  <p class="section-subtitle">
+    Gérez vos informations de connexion et la sécurité de votre compte
+  </p>
+
+  <div class="form-section">
+    <h3>Changer le mot de passe</h3>
+    <mat-divider></mat-divider>
+
+    <form [formGroup]="passwordForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Mot de passe actuel</mat-label>
+        <input
+          matInput
+          formControlName="currentPassword"
+          [type]="hideCurrentPassword ? 'password' : 'text'"
+          required
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          type="button"
+          (click)="hideCurrentPassword = !hideCurrentPassword"
+        >
+          <mat-icon>{{
+            hideCurrentPassword ? "visibility_off" : "visibility"
+          }}</mat-icon>
+        </button>
+        <mat-error
+          *ngIf="passwordForm.get('currentPassword')?.hasError('required')"
+        >
+          Le mot de passe actuel est obligatoire
+        </mat-error>
+        <mat-error
+          *ngIf="passwordForm.get('currentPassword')?.hasError('minlength')"
+        >
+          Le mot de passe doit contenir au moins 8 caractères
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nouveau mot de passe</mat-label>
+        <input
+          matInput
+          formControlName="newPassword"
+          [type]="hideNewPassword ? 'password' : 'text'"
+          required
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          type="button"
+          (click)="hideNewPassword = !hideNewPassword"
+        >
+          <mat-icon>{{
+            hideNewPassword ? "visibility_off" : "visibility"
+          }}</mat-icon>
+        </button>
+        <mat-error
+          *ngIf="passwordForm.get('newPassword')?.hasError('required')"
+        >
+          Le nouveau mot de passe est obligatoire
+        </mat-error>
+        <mat-error
+          *ngIf="passwordForm.get('newPassword')?.hasError('minlength')"
+        >
+          Le mot de passe doit contenir au moins 8 caractères
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Confirmer le nouveau mot de passe</mat-label>
+        <input
+          matInput
+          formControlName="confirmPassword"
+          [type]="hideConfirmPassword ? 'password' : 'text'"
+          required
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          type="button"
+          (click)="hideConfirmPassword = !hideConfirmPassword"
+        >
+          <mat-icon>{{
+            hideConfirmPassword ? "visibility_off" : "visibility"
+          }}</mat-icon>
+        </button>
+        <mat-error
+          *ngIf="passwordForm.get('confirmPassword')?.hasError('required')"
+        >
+          La confirmation du mot de passe est obligatoire
+        </mat-error>
+        <mat-error
+          *ngIf="
+            passwordForm.get('confirmPassword')?.hasError('passwordMismatch')
+          "
+        >
+          Les mots de passe ne correspondent pas
+        </mat-error>
+      </mat-form-field>
+
+      <div class="form-actions">
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="passwordForm.invalid || isLoading"
+        >
+          <mat-icon>save</mat-icon>
+          Modifier le mot de passe
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

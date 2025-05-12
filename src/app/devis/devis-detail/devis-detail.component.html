@@ -1,0 +1,211 @@
+<div class="container">
+  <div class="header">
+    <h1>Détails du devis</h1>
+    <button mat-raised-button color="primary" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+      Retour à la liste
+    </button>
+  </div>
+
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+
+  <div class="error-container" *ngIf="error">
+    <mat-card>
+      <mat-card-content>
+        <div class="error-message">
+          <mat-icon color="warn">error</mat-icon>
+          <span>{{ error }}</span>
+        </div>
+        <button mat-raised-button color="primary" (click)="goBack()">
+          Retour à la liste
+        </button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-card *ngIf="devis && !isLoading && !error">
+    <mat-card-header>
+      <mat-card-title>{{ devis.sujet }}</mat-card-title>
+      <mat-card-subtitle
+        >Devis N°: {{ devis.numeroDevis || "Non attribué" }}</mat-card-subtitle
+      >
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="detail-section">
+        <h2>Informations générales</h2>
+        <div class="detail-grid">
+          <div class="detail-item">
+            <span class="detail-label">Sujet:</span>
+            <span class="detail-value">{{ devis.sujet }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Client:</span>
+            <span class="detail-value">{{
+              devis.client?.nom || "Non spécifié"
+            }}</span>
+          </div>
+          <div class="detail-item" *ngIf="devis.prospect">
+            <span class="detail-label">Prospect:</span>
+            <span class="detail-value">{{
+              devis.prospect?.nom || "Non spécifié"
+            }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Échéance:</span>
+            <span class="detail-value">{{
+              devis.echeance
+                ? (devis.echeance | date : "dd/MM/yyyy")
+                : "Non spécifiée"
+            }}</span>
+          </div>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="detail-section">
+        <h2>Conditions de livraison et paiement</h2>
+        <div class="detail-grid">
+          <div class="detail-item">
+            <span class="detail-label">Délai de livraison:</span>
+            <span class="detail-value">{{
+              devis.delaiLivraison || "Non spécifié"
+            }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Mode de livraison:</span>
+            <span class="detail-value">{{
+              devis.modeLivraison || "Non spécifié"
+            }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Mode de paiement:</span>
+            <span class="detail-value">{{
+              devis.modePaiement || "Non spécifié"
+            }}</span>
+          </div>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="detail-section">
+        <h2>Lignes du devis</h2>
+        <table
+          mat-table
+          [dataSource]="devis.lignesDevis || []"
+          class="mat-elevation-z0"
+        >
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef>Description</th>
+            <td mat-cell *matCellDef="let ligne">{{ ligne.description }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="quantite">
+            <th mat-header-cell *matHeaderCellDef>Quantité</th>
+            <td mat-cell *matCellDef="let ligne">{{ ligne.quantite }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="prixUnitaire">
+            <th mat-header-cell *matHeaderCellDef>Prix unitaire</th>
+            <td mat-cell *matCellDef="let ligne">
+              {{ ligne.prixUnitaire | currency : "EUR" : "symbol" : "1.2-2" }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="tauxTVA">
+            <th mat-header-cell *matHeaderCellDef>TVA</th>
+            <td mat-cell *matCellDef="let ligne">{{ ligne.tauxTVA }}%</td>
+          </ng-container>
+
+          <ng-container matColumnDef="montantTTC">
+            <th mat-header-cell *matHeaderCellDef>Montant TTC</th>
+            <td mat-cell *matCellDef="let ligne">
+              {{ ligne.montantTTC | currency : "EUR" : "symbol" : "1.2-2" }}
+            </td>
+          </ng-container>
+
+          <tr
+            mat-header-row
+            *matHeaderRowDef="[
+              'description',
+              'quantite',
+              'prixUnitaire',
+              'tauxTVA',
+              'montantTTC'
+            ]"
+          ></tr>
+          <tr
+            mat-row
+            *matRowDef="
+              let row;
+              columns: [
+                'description',
+                'quantite',
+                'prixUnitaire',
+                'tauxTVA',
+                'montantTTC'
+              ]
+            "
+          ></tr>
+
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="5">Aucune ligne dans ce devis</td>
+          </tr>
+        </table>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="detail-section">
+        <h2>Totaux</h2>
+        <div class="totals">
+          <div class="total-item">
+            <span class="total-label">Total TTC:</span>
+            <span class="total-value">{{
+              devis.totalTTC | currency : "EUR" : "symbol" : "1.2-2"
+            }}</span>
+          </div>
+          <div class="total-item">
+            <span class="total-label">Poids total:</span>
+            <span class="total-value">{{
+              devis.totalPoidsKg
+                ? (devis.totalPoidsKg | number : "1.2-2") + " kg"
+                : "Non spécifié"
+            }}</span>
+          </div>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="detail-section">
+        <h2>Informations système</h2>
+        <div class="detail-grid">
+          <div class="detail-item">
+            <span class="detail-label">Date de création:</span>
+            <span class="detail-value">{{
+              formatDate(devis.dateCreation)
+            }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Dernière modification:</span>
+            <span class="detail-value">{{
+              formatDate(devis.dateModification)
+            }}</span>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button mat-raised-button color="accent" (click)="editDevis()">
+        <mat-icon>edit</mat-icon>
+        Modifier
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

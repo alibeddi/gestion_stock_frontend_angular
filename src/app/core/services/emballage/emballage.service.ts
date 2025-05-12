@@ -1,37 +1,55 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { Emballage } from "../../models/emballage";
+import { environment } from "../../../../environments/environment";
+import { ApiService } from "../api.service";
+
+export interface Emballage {
+  id?: number;
+  code: string;
+  libelle: string;
+  poids?: number;
+  typeEmballage?: string;
+  dateCreation?: Date;
+  dateModification?: Date;
+}
 
 @Injectable({
   providedIn: "root",
 })
 export class EmballageService {
-  private readonly BASE_URL = "/api/emballages";
+  private baseUrl = `${environment.apiUrl}/emballages`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private apiService: ApiService) {}
 
   getAllEmballages(): Observable<any> {
-    return this.http.get<any>(`${this.BASE_URL}`);
+    return this.apiService.get<any>(this.baseUrl);
   }
 
   getEmballageById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.BASE_URL}/${id}`);
+    return this.apiService.get<any>(`${this.baseUrl}/${id}`);
   }
 
   getEmballageByCode(code: string): Observable<any> {
-    return this.http.get<any>(`${this.BASE_URL}/code/${code}`);
+    return this.apiService.get<any>(`${this.baseUrl}/code/${code}`);
+  }
+
+  getEmballagesByLibelle(libelle: string): Observable<any> {
+    return this.apiService.get<any>(`${this.baseUrl}/libelle/${libelle}`);
+  }
+
+  getEmballagesByType(typeEmballage: string): Observable<any> {
+    return this.apiService.get<any>(`${this.baseUrl}/type/${typeEmballage}`);
   }
 
   createEmballage(emballage: Emballage): Observable<any> {
-    return this.http.post<any>(`${this.BASE_URL}`, emballage);
+    return this.apiService.post<any>(this.baseUrl, emballage);
   }
 
   updateEmballage(id: number, emballage: Emballage): Observable<any> {
-    return this.http.put<any>(`${this.BASE_URL}/${id}`, emballage);
+    return this.apiService.put<any>(`${this.baseUrl}/${id}`, emballage);
   }
 
   deleteEmballage(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.BASE_URL}/${id}`);
+    return this.apiService.delete<any>(`${this.baseUrl}/${id}`);
   }
 }

@@ -1,41 +1,53 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
+import { environment } from "../../environments/environment";
+import { ApiService } from "../core/services/api.service";
+import { Emballage } from "../core/services/emballage/emballage.service";
 
 export interface Product {
-  id: number;
+  id?: number;
   code: string;
   libelle: string;
-  description: string;
+  emballage?: Emballage;
+  categorie?: string;
+  poidsKg?: number;
+  typeProduit?: string;
+  actif: boolean;
+  isPackage: boolean;
+  ecozit: boolean;
+  prixGros: number;
   prixDetail: number;
   prixGerant: number;
-  prixGros: number;
-  quantity: number;
+  dateCreation?: Date;
+  dateModification?: Date;
+  // Additional fields not in ProduitDto but used in frontend
+  description?: string;
+  quantity?: number;
 }
 
 @Injectable({ providedIn: "root" })
 export class ProductService {
-  private readonly BASE_URL = "http://localhost:8080/api/produits"; // Adjust if your backend URL differs
+  private baseUrl = `${environment.apiUrl}/produits`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private apiService: ApiService) {}
 
-  getProducts(): Observable<{ data: Product[] }> {
-    return this.http.get<{ data: Product[] }>(this.BASE_URL);
+  getProducts(): Observable<any> {
+    return this.apiService.get<any>(this.baseUrl);
   }
 
-  getProduct(id: number): Observable<Product> {
-    return this.http.get<Product>(`${this.BASE_URL}/${id}`);
+  getProduct(id: number): Observable<any> {
+    return this.apiService.get<any>(`${this.baseUrl}/${id}`);
   }
 
-  createProduct(product: Product): Observable<Product> {
-    return this.http.post<Product>(this.BASE_URL, product);
+  createProduct(product: Product): Observable<any> {
+    return this.apiService.post<any>(this.baseUrl, product);
   }
 
-  updateProduct(id: number, product: Product): Observable<Product> {
-    return this.http.put<Product>(`${this.BASE_URL}/${id}`, product);
+  updateProduct(id: number, product: Product): Observable<any> {
+    return this.apiService.put<any>(`${this.baseUrl}/${id}`, product);
   }
 
-  deleteProduct(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.BASE_URL}/${id}`);
+  deleteProduct(id: number): Observable<any> {
+    return this.apiService.delete<any>(`${this.baseUrl}/${id}`);
   }
 }

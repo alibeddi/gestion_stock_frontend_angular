@@ -1,0 +1,101 @@
+.settings-section {
+  margin-bottom: 30px;
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0 0 8px 0;
+  color: #333;
+}
+
+.section-subtitle {
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 24px 0;
+}
+
+.form-section {
+  margin-bottom: 32px;
+
+  h3 {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0 0 8px 0;
+    color: #444;
+  }
+
+  mat-divider {
+    margin-bottom: 16px;
+  }
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.form-actions {
+  margin-top: 24px;
+  display: flex;
+  justify-content: flex-end;
+
+  button {
+    min-width: 200px;
+
+    mat-icon {
+      margin-right: 8px;
+    }
+  }
+}
+
+.login-history {
+  margin: 24px 0;
+}
+
+.login-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid #eee;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.login-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-device {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+
+  mat-icon {
+    font-size: 20px;
+    height: 20px;
+    width: 20px;
+    margin-right: 8px;
+    color: #666;
+  }
+
+  span {
+    font-weight: 500;
+    color: #333;
+  }
+}
+
+.login-location {
+  color: #666;
+  font-size: 13px;
+  margin-left: 28px;
+}
+
+.login-time {
+  color: #666;
+  font-size: 13px;
+}

@@ -1,23 +1,172 @@
-<div class="product-detail-container">
-  <button mat-button color="primary" (click)="goBack()">
-    <mat-icon>arrow_back</mat-icon> Back to Products
-  </button>
+<div class="container">
+  <div class="header">
+    <h1>Détails du produit</h1>
+    <button mat-raised-button color="primary" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+      Retour à la liste
+    </button>
+  </div>
 
-  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
-  <div *ngIf="error" class="error">{{ error }}</div>
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
 
-  <mat-card *ngIf="!isLoading && !error && product">
-    <mat-card-title>{{ product.libelle }}</mat-card-title>
-    <mat-card-subtitle>Code: {{ product.code }}</mat-card-subtitle>
+  <div class="error-container" *ngIf="error">
+    <mat-card>
+      <mat-card-content>
+        <div class="error-message">
+          <mat-icon color="warn">error</mat-icon>
+          <span>{{ error }}</span>
+        </div>
+        <button mat-raised-button color="primary" (click)="goBack()">
+          Retour à la liste
+        </button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-card *ngIf="product && !isLoading && !error">
+    <mat-card-header>
+      <mat-card-title>{{ product.libelle }}</mat-card-title>
+      <mat-card-subtitle>Code: {{ product.code }}</mat-card-subtitle>
+    </mat-card-header>
+
     <mat-card-content>
-      <p><strong>Description:</strong> {{ product.description }}</p>
-      <p><strong>Prix de détail:</strong> {{ product.prixDetail | currency }}</p>
-      <p><strong>Prix gérant:</strong> {{ product.prixGerant | currency }}</p>
-      <p><strong>Prix de gros:</strong> {{ product.prixGros | currency }}</p>
-      <p><strong>Quantity:</strong> {{ product.quantity }}</p>
+      <div class="detail-section">
+        <h2>Informations générales</h2>
+        <div class="detail-grid">
+          <div class="detail-item">
+            <span class="detail-label">Code:</span>
+            <span class="detail-value">{{ product.code }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Libellé:</span>
+            <span class="detail-value">{{ product.libelle }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Description:</span>
+            <span class="detail-value">{{
+              product.description || "Non spécifié"
+            }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Catégorie:</span>
+            <span class="detail-value">{{
+              product.categorie || "Non spécifié"
+            }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Type de produit:</span>
+            <span class="detail-value">{{
+              product.typeProduit || "Non spécifié"
+            }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Poids:</span>
+            <span class="detail-value">{{
+              product.poidsKg
+                ? (product.poidsKg | number : "1.2-2") + " kg"
+                : "Non spécifié"
+            }}</span>
+          </div>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="detail-section">
+        <h2>Informations de prix</h2>
+        <div class="detail-grid">
+          <div class="detail-item">
+            <span class="detail-label">Prix de détail:</span>
+            <span class="detail-value">{{
+              product.prixDetail | currency : "EUR" : "symbol" : "1.2-2"
+            }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Prix gérant:</span>
+            <span class="detail-value">{{
+              product.prixGerant | currency : "EUR" : "symbol" : "1.2-2"
+            }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Prix de gros:</span>
+            <span class="detail-value">{{
+              product.prixGros | currency : "EUR" : "symbol" : "1.2-2"
+            }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Quantité:</span>
+            <span class="detail-value">{{ product.quantity || 0 }}</span>
+          </div>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="detail-section">
+        <h2>Statut</h2>
+        <div class="detail-grid">
+          <div class="detail-item">
+            <span class="detail-label">Actif:</span>
+            <span
+              class="detail-value status-badge"
+              [ngClass]="product.actif ? 'active' : 'inactive'"
+            >
+              {{ product.actif ? "Actif" : "Inactif" }}
+            </span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Package:</span>
+            <span class="detail-value">{{
+              product.isPackage ? "Oui" : "Non"
+            }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Ecozit:</span>
+            <span class="detail-value">{{
+              product.ecozit ? "Oui" : "Non"
+            }}</span>
+          </div>
+          <div class="detail-item" *ngIf="product.emballage">
+            <span class="detail-label">Emballage:</span>
+            <span class="detail-value">{{
+              product.emballage.libelle || "Non spécifié"
+            }}</span>
+          </div>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="detail-section">
+        <h2>Informations système</h2>
+        <div class="detail-grid">
+          <div class="detail-item">
+            <span class="detail-label">Date de création:</span>
+            <span class="detail-value">{{
+              formatDate(product.dateCreation)
+            }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Dernière modification:</span>
+            <span class="detail-value">{{
+              formatDate(product.dateModification)
+            }}</span>
+          </div>
+        </div>
+      </div>
     </mat-card-content>
+
     <mat-card-actions>
-      <button mat-raised-button color="primary" [routerLink]="['/products/product-form', product.id]">Edit</button>
+      <button
+        mat-raised-button
+        color="accent"
+        [routerLink]="['/products/product-form', product.id]"
+      >
+        <mat-icon>edit</mat-icon>
+        Modifier
+      </button>
     </mat-card-actions>
   </mat-card>
 </div>

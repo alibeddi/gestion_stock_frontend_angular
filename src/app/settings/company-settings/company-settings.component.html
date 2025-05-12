@@ -1,0 +1,133 @@
+<div class="settings-section">
+  <h2 class="section-title">Paramètres de l'entreprise</h2>
+  <p class="section-subtitle">
+    Configurez les informations de votre entreprise
+  </p>
+
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Chargement des données...</p>
+  </div>
+
+  <form [formGroup]="companyForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+    <div class="form-section">
+      <h3>Informations légales</h3>
+      <mat-divider></mat-divider>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nom de l'entreprise</mat-label>
+        <input matInput formControlName="companyName" required />
+        <mat-error *ngIf="companyForm.get('companyName')?.hasError('required')">
+          Le nom de l'entreprise est obligatoire
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Matricule fiscal</mat-label>
+        <input matInput formControlName="taxId" required />
+        <mat-error *ngIf="companyForm.get('taxId')?.hasError('required')">
+          Le matricule fiscal est obligatoire
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-section">
+      <h3>Coordonnées</h3>
+      <mat-divider></mat-divider>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" required type="email" />
+          <mat-error *ngIf="companyForm.get('email')?.hasError('required')">
+            L'email est obligatoire
+          </mat-error>
+          <mat-error *ngIf="companyForm.get('email')?.hasError('email')">
+            Veuillez entrer un email valide
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Téléphone</mat-label>
+          <input matInput formControlName="phone" required />
+          <mat-error *ngIf="companyForm.get('phone')?.hasError('required')">
+            Le téléphone est obligatoire
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Adresse</mat-label>
+        <textarea
+          matInput
+          formControlName="address"
+          required
+          rows="2"
+        ></textarea>
+        <mat-error *ngIf="companyForm.get('address')?.hasError('required')">
+          L'adresse est obligatoire
+        </mat-error>
+      </mat-form-field>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Code postal</mat-label>
+          <input matInput formControlName="postalCode" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Ville</mat-label>
+          <input matInput formControlName="city" required />
+          <mat-error *ngIf="companyForm.get('city')?.hasError('required')">
+            La ville est obligatoire
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Pays</mat-label>
+        <input matInput formControlName="country" required />
+        <mat-error *ngIf="companyForm.get('country')?.hasError('required')">
+          Le pays est obligatoire
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Site web</mat-label>
+        <input matInput formControlName="website" type="url" />
+      </mat-form-field>
+    </div>
+
+    <div class="form-section">
+      <h3>Paramètres système</h3>
+      <mat-divider></mat-divider>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Devise</mat-label>
+        <mat-select formControlName="currency">
+          <mat-option value="TND">Dinar Tunisien (TND)</mat-option>
+          <mat-option value="EUR">Euro (EUR)</mat-option>
+          <mat-option value="USD">Dollar Américain (USD)</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>URL du logo</mat-label>
+        <input matInput formControlName="logoUrl" />
+        <mat-hint>Laissez vide pour utiliser le logo par défaut</mat-hint>
+      </mat-form-field>
+    </div>
+
+    <div class="form-actions">
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="companyForm.invalid || isLoading"
+      >
+        <mat-icon>save</mat-icon>
+        Enregistrer
+      </button>
+    </div>
+  </form>
+</div>

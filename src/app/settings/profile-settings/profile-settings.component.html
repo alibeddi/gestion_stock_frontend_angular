@@ -1,0 +1,96 @@
+<div class="settings-section">
+  <h2 class="section-title">Paramètres du profil</h2>
+  <p class="section-subtitle">
+    Gérez les informations de votre profil et vos préférences
+  </p>
+
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Chargement des données...</p>
+  </div>
+
+  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+    <div class="form-section">
+      <h3>Informations personnelles</h3>
+      <mat-divider></mat-divider>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Prénom</mat-label>
+          <input matInput formControlName="firstName" required />
+          <mat-error *ngIf="profileForm.get('firstName')?.hasError('required')">
+            Le prénom est obligatoire
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Nom</mat-label>
+          <input matInput formControlName="lastName" required />
+          <mat-error *ngIf="profileForm.get('lastName')?.hasError('required')">
+            Le nom est obligatoire
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" required type="email" />
+          <mat-error *ngIf="profileForm.get('email')?.hasError('required')">
+            L'email est obligatoire
+          </mat-error>
+          <mat-error *ngIf="profileForm.get('email')?.hasError('email')">
+            Veuillez entrer un email valide
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Téléphone</mat-label>
+          <input matInput formControlName="phone" />
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Poste</mat-label>
+        <input matInput formControlName="position" />
+      </mat-form-field>
+    </div>
+
+    <div class="form-section">
+      <h3>Préférences</h3>
+      <mat-divider></mat-divider>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Langue</mat-label>
+        <mat-select formControlName="language">
+          <mat-option value="fr">Français</mat-option>
+          <mat-option value="en">Anglais</mat-option>
+          <mat-option value="ar">Arabe</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <h4>Notifications</h4>
+      <div class="notification-options">
+        <mat-slide-toggle formControlName="notificationEmail" color="primary">
+          Recevoir des notifications par email
+        </mat-slide-toggle>
+
+        <mat-slide-toggle formControlName="notificationSms" color="primary">
+          Recevoir des notifications par SMS
+        </mat-slide-toggle>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="profileForm.invalid || isLoading"
+      >
+        <mat-icon>save</mat-icon>
+        Enregistrer
+      </button>
+    </div>
+  </form>
+</div>
