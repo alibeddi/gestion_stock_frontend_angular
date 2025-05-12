@@ -1,22 +1,200 @@
 <div class="client-detail-container">
   <button mat-button color="primary" (click)="goBack()">
-    <mat-icon>arrow_back</mat-icon> Back to Clients
+    <mat-icon>arrow_back</mat-icon> Retour à la liste
   </button>
 
-  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+  <mat-progress-spinner
+    *ngIf="isLoading"
+    mode="indeterminate"
+  ></mat-progress-spinner>
   <div *ngIf="error" class="error">{{ error }}</div>
 
   <mat-card *ngIf="!isLoading && !error && client">
-    <mat-card-title>{{ client.nom }}</mat-card-title>
-    <mat-card-subtitle>ID: {{ client.id }}</mat-card-subtitle>
+    <mat-card-header>
+      <mat-card-title>{{ client.nom }}</mat-card-title>
+      <mat-card-subtitle>ID: {{ client.id }}</mat-card-subtitle>
+    </mat-card-header>
+
     <mat-card-content>
-      <p><strong>Email:</strong> {{ client.email }}</p>
-      <p><strong>Phone:</strong> {{ client.telephone }}</p>
-      <p><strong>Address:</strong> {{ client.adresseRue }}</p>
-      <!-- Add more fields as needed -->
+      <div class="client-details">
+        <!-- Informations Générales -->
+        <mat-expansion-panel expanded>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Informations Générales</mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="detail-section">
+            <div class="detail-item">
+              <span class="label">Nom:</span>
+              <span class="value">{{ client.nom }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Numéro Compte:</span>
+              <span class="value">{{
+                client.numeroCompte || "Non défini"
+              }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Numéro Sous-Compte:</span>
+              <span class="value">{{
+                client.numeroSousCompte || "Non défini"
+              }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Matricule Fiscal:</span>
+              <span class="value">{{
+                client.matriculeFiscal || "Non défini"
+              }}</span>
+            </div>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- Informations d'Activité -->
+        <mat-expansion-panel expanded>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Informations d'Activité</mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="detail-section">
+            <div class="detail-item">
+              <span class="label">Chiffre d'Affaires:</span>
+              <span class="value">{{
+                client.chiffreAffaires || "Non défini"
+              }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Effectif:</span>
+              <span class="value">{{ client.effectif || "Non défini" }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Secteur d'Activité:</span>
+              <span class="value">{{
+                client.secteurActivite?.libelle || "Non défini"
+              }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Exonéré:</span>
+              <span class="value">{{ client.exonere ? "Oui" : "Non" }}</span>
+            </div>
+            <div class="detail-item" *ngIf="client.exonere">
+              <span class="label">Date Limite d'Exonération:</span>
+              <span class="value">{{
+                formatDate(client.dateLimiteExoneration)
+              }}</span>
+            </div>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- Informations Commerciales -->
+        <mat-expansion-panel expanded>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Informations Commerciales</mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="detail-section">
+            <div class="detail-item">
+              <span class="label">Mode de Règlement:</span>
+              <span class="value">{{
+                getReadableModeReglement(client.modeReglement)
+              }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Prix d'Achat:</span>
+              <span class="value">{{
+                getReadablePrixAchat(client.prixAchat)
+              }}</span>
+            </div>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- Coordonnées -->
+        <mat-expansion-panel expanded>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Coordonnées</mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="detail-section">
+            <div class="detail-item">
+              <span class="label">Mobile:</span>
+              <span class="value">{{ client.mobile || "Non défini" }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Téléphone:</span>
+              <span class="value">{{ client.telephone || "Non défini" }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Autre Téléphone:</span>
+              <span class="value">{{
+                client.autreTelephone || "Non défini"
+              }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Fax:</span>
+              <span class="value">{{ client.fax || "Non défini" }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Email:</span>
+              <span class="value">{{ client.email || "Non défini" }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Autre Email:</span>
+              <span class="value">{{ client.autreEmail || "Non défini" }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Site Web:</span>
+              <span class="value">{{ client.siteWeb || "Non défini" }}</span>
+            </div>
+          </div>
+        </mat-expansion-panel>
+
+        <!-- Adresse -->
+        <mat-expansion-panel expanded>
+          <mat-expansion-panel-header>
+            <mat-panel-title>Adresse</mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="detail-section">
+            <div class="detail-item">
+              <span class="label">Rue:</span>
+              <span class="value">{{ client.adresseRue || "Non défini" }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Code Postal:</span>
+              <span class="value">{{
+                client.adresseCodePostal || "Non défini"
+              }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Ville:</span>
+              <span class="value">{{
+                client.adresseVille || "Non défini"
+              }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Pays:</span>
+              <span class="value">{{
+                client.adressePays || "Non défini"
+              }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Gouvernorat:</span>
+              <span class="value">{{
+                client.gouvernorat?.nom || "Non défini"
+              }}</span>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </div>
     </mat-card-content>
+
     <mat-card-actions>
-      <button mat-raised-button color="primary" [routerLink]="['/clients/client-form', client.id]">Edit</button>
+      <button
+        mat-raised-button
+        color="primary"
+        [routerLink]="['/clients/edit', client.id]"
+      >
+        Modifier
+      </button>
     </mat-card-actions>
   </mat-card>
 </div>

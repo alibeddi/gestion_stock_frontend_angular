@@ -1,22 +1,62 @@
 .client-detail-container {
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  mat-card {
+    margin-top: 20px;
+  }
+
+  .error {
+    color: red;
+    margin: 20px 0;
+    font-weight: bold;
+  }
+
+  mat-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding: 16px;
+  }
+
+  .client-details {
+    margin-top: 20px;
+
+    mat-expansion-panel {
+      margin-bottom: 16px;
+    }
+
+    .detail-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 12px;
+      padding: 12px 0;
+    }
+
+    .detail-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 8px;
+
+      .label {
+        font-weight: 500;
+        color: rgba(0, 0, 0, 0.6);
+        font-size: 0.9rem;
+        margin-bottom: 4px;
+      }
+
+      .value {
+        font-size: 1rem;
+      }
+    }
+  }
 }
-mat-card {
-  margin-top: 1.5rem;
-}
-.error {
-  color: #d32f2f;
-  margin: 1rem 0;
-}
+
 mat-progress-spinner {
   display: block;
   margin: 2rem auto;
 }
+
 button[mat-button] {
   margin-bottom: 1rem;
 }

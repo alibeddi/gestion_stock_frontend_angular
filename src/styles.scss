@@ -1,7 +1,6 @@
-
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
-@use '@angular/material' as mat;
+@use "@angular/material" as mat;
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -20,13 +19,15 @@ $crm-frontend-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$crm-frontend-theme: mat.define-light-theme((
-  color: (
-    primary: $crm-frontend-primary,
-    accent: $crm-frontend-accent,
-    warn: $crm-frontend-warn,
+$crm-frontend-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $crm-frontend-primary,
+      accent: $crm-frontend-accent,
+      warn: $crm-frontend-warn,
+    ),
   )
-));
+);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
@@ -35,5 +36,76 @@ $crm-frontend-theme: mat.define-light-theme((
 
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+/* Material Form Field Fixes */
+.mat-mdc-form-field {
+  .mdc-floating-label {
+    &--float-above {
+      transform: translateY(-106%) scale(0.75);
+    }
+  }
+}
+
+.mat-mdc-text-field-wrapper {
+  &.mdc-text-field--focused {
+    .mdc-floating-label {
+      color: var(--mat-form-field-label-text-color);
+    }
+  }
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: transparent;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+}
+
+// Ensure form field labels are visible when focused
+.mat-mdc-form-field.mat-focused .mat-mdc-form-field-label {
+  color: var(--mat-form-field-label-text-color);
+}
+
+.mdc-floating-label--float-above {
+  z-index: 1;
+}
+
+// Simple fix for floating labels in Material 15+
+.mat-mdc-input-element {
+  &:focus + .mat-mdc-form-field-label-wrapper .mat-mdc-form-field-label,
+  &.mat-mdc-form-field-should-float
+    + .mat-mdc-form-field-label-wrapper
+    .mat-mdc-form-field-label {
+    transform: translateY(-1.5em) scale(0.75);
+    width: 133.33333%;
+  }
+}
+
+// General fix for material inputs
+.mdc-text-field {
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+}
+
+.mat-mdc-form-field-infix {
+  min-height: 48px;
+  padding: 12px 0;
+  display: flex;
+  position: relative;
+}
+
+// Make label float on focus
+.mat-mdc-form-field:not(.mat-form-field-no-animations) .mdc-floating-label {
+  transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1),
+    color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}

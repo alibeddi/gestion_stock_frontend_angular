@@ -1,43 +1,243 @@
 <div class="client-form-container">
-  <h2>{{ isEdit ? 'Edit Client' : 'Add Client' }}</h2>
+  <button mat-button color="primary" (click)="cancel()">
+    <mat-icon>arrow_back</mat-icon> Retour à la liste
+  </button>
 
-  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+  <h2>{{ isEdit ? "Modifier Client" : "Ajouter Client" }}</h2>
+
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-progress-spinner
+      mode="indeterminate"
+      diameter="50"
+    ></mat-progress-spinner>
+    <p>Chargement des données...</p>
+  </div>
+
   <div *ngIf="error" class="error">{{ error }}</div>
 
   <form [formGroup]="clientForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+    <!-- Informations Générales -->
+    <h3 class="section-title">Informations Générales</h3>
+
     <mat-form-field class="full-width">
-      <mat-label>Name</mat-label>
+      <mat-label>Nom</mat-label>
       <input matInput formControlName="nom" required />
-      <mat-error *ngIf="clientForm.get('name')?.hasError('required')">
-        Name is required
+      <mat-error *ngIf="clientForm.get('nom')?.hasError('required')">
+        Le nom est obligatoire
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field class="full-width">
-      <mat-label>Email</mat-label>
-      <input matInput formControlName="email" required />
-      <mat-error *ngIf="clientForm.get('email')?.hasError('required')">
-        Email is required
-      </mat-error>
-      <mat-error *ngIf="clientForm.get('email')?.hasError('email')">
-        Please enter a valid email
-      </mat-error>
-    </mat-form-field>
+    <div class="form-row">
+      <mat-form-field class="half-width">
+        <mat-label>Numéro Compte</mat-label>
+        <input matInput formControlName="numeroCompte" />
+      </mat-form-field>
+
+      <mat-form-field class="half-width">
+        <mat-label>Numéro Sous-Compte</mat-label>
+        <input matInput formControlName="numeroSousCompte" />
+      </mat-form-field>
+    </div>
 
     <mat-form-field class="full-width">
-      <mat-label>Phone</mat-label>
-      <input matInput formControlName="phone" />
+      <mat-label>Matricule Fiscal</mat-label>
+      <input matInput formControlName="matriculeFiscal" />
     </mat-form-field>
 
+    <!-- Informations d'Activité -->
+    <h3 class="section-title">Informations d'Activité</h3>
+
+    <div class="form-row">
+      <mat-form-field class="half-width">
+        <mat-label>Chiffre d'Affaires</mat-label>
+        <input matInput type="number" formControlName="chiffreAffaires" />
+      </mat-form-field>
+
+      <mat-form-field class="half-width">
+        <mat-label>Effectif</mat-label>
+        <input matInput type="number" formControlName="effectif" />
+      </mat-form-field>
+    </div>
+
     <mat-form-field class="full-width">
-      <mat-label>Address</mat-label>
-      <textarea matInput formControlName="address"></textarea>
+      <mat-label>Secteur d'Activité</mat-label>
+      <mat-select formControlName="secteurActivite">
+        <mat-option>-- Sélectionner un secteur d'activité --</mat-option>
+        <mat-option *ngFor="let secteur of secteurActivites" [value]="secteur">
+          {{ secteur.libelle }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="form-row align-items-center">
+      <mat-checkbox formControlName="exonere">Exonéré</mat-checkbox>
+
+      <mat-form-field
+        *ngIf="clientForm.get('exonere')?.value"
+        class="half-width"
+      >
+        <mat-label>Date Limite d'Exonération</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          formControlName="dateLimiteExoneration"
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <!-- Informations Commerciales -->
+    <h3 class="section-title">Informations Commerciales</h3>
+
+    <div class="form-row">
+      <mat-form-field class="half-width">
+        <mat-label>Mode de Règlement</mat-label>
+        <mat-select formControlName="modeReglement">
+          <mat-option>-- Sélectionner un mode de règlement --</mat-option>
+          <mat-option *ngFor="let mode of modesReglement" [value]="mode">
+            {{
+              mode === "ESPECE"
+                ? "Espèces"
+                : mode === "CHEQUE"
+                ? "Chèque"
+                : mode === "VIREMENT"
+                ? "Virement"
+                : mode === "CARTE_BANCAIRE"
+                ? "Carte bancaire"
+                : mode === "LETTRE_CREDIT"
+                ? "Lettre de crédit"
+                : mode === "TRAITE"
+                ? "Traite"
+                : mode
+            }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="half-width">
+        <mat-label>Prix d'Achat</mat-label>
+        <mat-select formControlName="prixAchat">
+          <mat-option>-- Sélectionner un prix d'achat --</mat-option>
+          <mat-option *ngFor="let prix of prixAchats" [value]="prix">
+            {{
+              prix === "PRIX_GROS"
+                ? "Prix de gros"
+                : prix === "PRIX_DETAIL"
+                ? "Prix de détail"
+                : prix === "PRIX_GERANT"
+                ? "Prix gérant"
+                : prix
+            }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- Coordonnées -->
+    <h3 class="section-title">Coordonnées</h3>
+
+    <div class="form-row">
+      <mat-form-field class="half-width">
+        <mat-label>Mobile</mat-label>
+        <input matInput formControlName="mobile" />
+      </mat-form-field>
+
+      <mat-form-field class="half-width">
+        <mat-label>Téléphone</mat-label>
+        <input matInput formControlName="telephone" />
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field class="half-width">
+        <mat-label>Autre Téléphone</mat-label>
+        <input matInput formControlName="autreTelephone" />
+      </mat-form-field>
+
+      <mat-form-field class="half-width">
+        <mat-label>Fax</mat-label>
+        <input matInput formControlName="fax" />
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field class="half-width">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" />
+        <mat-error *ngIf="clientForm.get('email')?.hasError('email')">
+          Format d'email invalide
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="half-width">
+        <mat-label>Autre Email</mat-label>
+        <input matInput formControlName="autreEmail" />
+        <mat-error *ngIf="clientForm.get('autreEmail')?.hasError('email')">
+          Format d'email invalide
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field class="full-width">
+      <mat-label>Site Web</mat-label>
+      <input matInput formControlName="siteWeb" />
+    </mat-form-field>
+
+    <!-- Adresse -->
+    <h3 class="section-title">Adresse</h3>
+
+    <mat-form-field class="full-width">
+      <mat-label>Rue</mat-label>
+      <textarea matInput formControlName="adresseRue"></textarea>
+    </mat-form-field>
+
+    <div class="form-row">
+      <mat-form-field class="third-width">
+        <mat-label>Code Postal</mat-label>
+        <input matInput formControlName="adresseCodePostal" />
+      </mat-form-field>
+
+      <mat-form-field class="third-width">
+        <mat-label>Ville</mat-label>
+        <input matInput formControlName="adresseVille" />
+      </mat-form-field>
+
+      <mat-form-field class="third-width">
+        <mat-label>Pays</mat-label>
+        <input matInput formControlName="adressePays" />
+      </mat-form-field>
+    </div>
+
+    <mat-form-field class="full-width">
+      <mat-label>Gouvernorat</mat-label>
+      <mat-select formControlName="gouvernorat">
+        <mat-option>-- Sélectionner un gouvernorat --</mat-option>
+        <mat-option
+          *ngFor="let gouvernorat of gouvernorats"
+          [value]="gouvernorat"
+        >
+          {{ gouvernorat.nom }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
 
     <div class="button-container">
-      <button mat-stroked-button color="primary" type="button" (click)="cancel()">Cancel</button>
-      <button mat-raised-button color="accent" type="submit" [disabled]="clientForm.invalid || isLoading">
-        {{ isEdit ? 'Update' : 'Create' }}
+      <button
+        mat-stroked-button
+        color="primary"
+        type="button"
+        (click)="cancel()"
+      >
+        Annuler
+      </button>
+      <button
+        mat-raised-button
+        color="accent"
+        type="submit"
+        [disabled]="clientForm.invalid || isLoading"
+      >
+        {{ isEdit ? "Mettre à jour" : "Créer" }}
       </button>
     </div>
   </form>

@@ -1,5 +1,5 @@
-import { Gouvernorat } from './gouvernorat';
-import { SecteurActivite } from './secteur-activite';
+import { Gouvernorat } from "./gouvernorat";
+import { SecteurActivite } from "./secteur-activite";
 
 export interface Client {
   id?: number;
@@ -32,9 +32,9 @@ export interface Client {
 }
 export interface ClientFilter {
   nom?: string;
-  matriculeFiscale?: string;
+  matriculeFiscal?: string;
   email?: string;
-  secteurActivite?: string;
+  secteurActiviteId?: number;
   sourceProspection?: string;
   statut?: string;
 }

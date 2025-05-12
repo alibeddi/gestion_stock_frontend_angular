@@ -1,6 +1,6 @@
 export interface Gouvernorat {
   id?: number;
   code: string;
-  libelle: string;
+  nom: string;
   pays?: string;
 }
