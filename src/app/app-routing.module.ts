@@ -29,11 +29,11 @@ const routes: Routes = [
         loadChildren: () =>
           import("./prospects/prospects.module").then((m) => m.ProspectsModule),
       },
-      {
-        path: "products",
-        loadChildren: () =>
-          import("./products/products.module").then((m) => m.ProductsModule),
-      },
+      // {
+      //   path: "products",
+      //   loadChildren: () =>
+      //     import("./products/products.module").then((m) => m.ProductsModule),
+      // },
       {
         path: "devis",
         loadChildren: () =>
@@ -44,12 +44,15 @@ const routes: Routes = [
         loadChildren: () =>
           import("./contacts/contacts.module").then((m) => m.ContactsModule),
       },
+      // Supprimez ou commentez la route users suivante :
+      /*
       {
         path: "users",
         loadChildren: () =>
           import("./users/users.module").then((m) => m.UsersModule),
         data: { roles: ["ADMIN"] },
       },
+      */
       {
         path: "emballages",
         loadChildren: () =>

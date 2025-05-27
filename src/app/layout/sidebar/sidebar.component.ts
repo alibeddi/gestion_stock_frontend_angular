@@ -23,19 +23,15 @@ interface NavItem {
 export class SidebarComponent implements OnInit {
   navItems: NavItem[] = [
     { name: "Dashboard", icon: "dashboard", route: "/dashboard" },
-    { name: "Products", icon: "inventory_2", route: "/products" },
-    { name: "Emballages", icon: "inventory", route: "/emballages" },
-    { name: "Clients", icon: "business", route: "/clients" },
     { name: "Prospects", icon: "person_search", route: "/prospects" },
-    { name: "Devis", icon: "description", route: "/devis" },
+    { name: "Clients", icon: "business", route: "/clients" },
     { name: "Contacts", icon: "people", route: "/contacts" },
-    {
-      name: "Users",
-      icon: "admin_panel_settings",
-      route: "/users",
-      requiredPermission: "ADMIN",
-    },
-    { name: "Paramètres", icon: "settings", route: "/settings" },
+    { name: "Emballages", icon: "inventory", route: "/emballages" },
+    
+    { name: "Produits", icon: "inventory_2", route: "/products" },
+    { name: "Devis", icon: "description", route: "/devis" },
+    
+    { name: "Paramètres", icon: "settings", route: "/settings",requiredPermission: "ADMIN", },
   ];
 
   currentRoute: string = "";

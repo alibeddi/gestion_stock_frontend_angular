@@ -7,7 +7,7 @@
     <div class="settings-sidebar">
       <mat-list>
         <mat-list-item
-          *ngFor="let link of navLinks; let i = index"
+          *ngFor="let link of filteredNavLinks; let i = index"
           [class.active]="activeTab === i"
           (click)="onTabChange(i)"
         >

@@ -3,7 +3,7 @@
     <mat-icon>menu</mat-icon>
   </button>
 
-  <span class="app-title">CRM System</span>
+  <span class="app-title">CRM Agil Energy</span>
 
   <div class="spacer"></div>
 
@@ -19,7 +19,7 @@
     <mat-menu #userMenu="matMenu">
       <button mat-menu-item routerLink="/users/profile">
         <mat-icon>person</mat-icon>
-        <span>Profile</span>
+        <span>Profil</span>
       </button>
 
       <button mat-menu-item routerLink="/settings">
@@ -29,14 +29,14 @@
 
       <button mat-menu-item *ngIf="isAdmin()" routerLink="/users">
         <mat-icon>people</mat-icon>
-        <span>User Management</span>
+        <span>Gestion des utilisateurs</span>
       </button>
 
       <mat-divider></mat-divider>
 
       <button mat-menu-item (click)="logout()">
         <mat-icon>exit_to_app</mat-icon>
-        <span>Logout</span>
+        <span>Déconnexion</span>
       </button>
     </mat-menu>
   </div>

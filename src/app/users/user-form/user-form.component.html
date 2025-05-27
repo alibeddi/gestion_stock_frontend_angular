@@ -5,6 +5,28 @@
   <div *ngIf="error" class="error">{{ error }}</div>
 
   <form [formGroup]="userForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field class="full-width">
+          <mat-label>Prénom</mat-label>
+          <input matInput formControlName="prenom" required />
+          <mat-error *ngIf="userForm.get('prenom')?.hasError('required')">
+            Le prénom est obligatoire
+          </mat-error>
+        </mat-form-field>
+      </div>
+      
+      <div class="col-md-6">
+        <mat-form-field class="full-width">
+          <mat-label>Nom</mat-label>
+          <input matInput formControlName="nom" required />
+          <mat-error *ngIf="userForm.get('nom')?.hasError('required')">
+            Le nom est obligatoire
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
     <mat-form-field class="full-width">
       <mat-label>Username</mat-label>
       <input matInput formControlName="username" required />
@@ -25,8 +47,23 @@
     </mat-form-field>
 
     <mat-form-field class="full-width">
+      <mat-label>Password</mat-label>
+      <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" [required]="!isEdit" />
+      <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
+        <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+      <mat-error *ngIf="userForm.get('password')?.hasError('required')">
+        Le mot de passe est obligatoire
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
       <mat-label>Role</mat-label>
-      <input matInput formControlName="role" required />
+      <mat-select formControlName="role" required>
+        <mat-option *ngFor="let role of roles" [value]="role.name">
+          {{ role.libelle || role.name }}
+        </mat-option>
+      </mat-select>
       <mat-error *ngIf="userForm.get('role')?.hasError('required')">
         Role is required
       </mat-error>

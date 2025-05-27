@@ -7,15 +7,16 @@
   <div *ngIf="error" class="error">{{ error }}</div>
 
   <mat-card *ngIf="!isLoading && !error && user">
-    <mat-card-title>{{ user.username }}</mat-card-title>
+    
+    <mat-card-title>{{ user.prenom+' '+ user.nom }}</mat-card-title>
     <mat-card-subtitle>ID: {{ user.id }}</mat-card-subtitle>
     <mat-card-content>
       <p><strong>Email:</strong> {{ user.email }}</p>
-      <p><strong>Role:</strong> {{ user.role }}</p>
+      <p><strong>Role:</strong> {{ user.roles[0].libelle }}</p>
       <!-- Add more fields as needed -->
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button color="primary" [routerLink]="['/users/user-form', user.id]">Edit</button>
+      <button mat-raised-button color="primary" [routerLink]="['/settings/users/edit', user.id]">Edit</button>
     </mat-card-actions>
   </mat-card>
 </div>

@@ -34,12 +34,28 @@ export class UserListComponent implements OnInit {
     });
   }
 
+  // Supprimez ces méthodes (lignes 36-42 environ)
+  /*
   viewUser(id: number): void {
     this.router.navigate(['/users/user-detail', id]);
   }
-
+  
   editUser(id: number): void {
     this.router.navigate(['/users/user-form', id]);
+  }
+  */
+  
+  // Gardez uniquement ces méthodes (lignes 60-68 environ)
+  addUser(): void {
+    this.router.navigate(['/settings/users/new']);
+  }
+  
+  viewUser(id: number): void {
+    this.router.navigate(['/settings/users', id]);
+  }
+  
+  editUser(id: number): void {
+    this.router.navigate(['/settings/users/edit', id]);
   }
 
   deleteUser(id: number): void {
@@ -54,10 +70,6 @@ export class UserListComponent implements OnInit {
         this.isLoading = false;
       }
     });
-  }
-
-  addUser(): void {
-    this.router.navigate(['/users/user-form']);
   }
 }
 

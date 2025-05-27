@@ -1,8 +1,8 @@
 <div class="auth-container">
   <div class="auth-card">
     <div class="auth-header">
-      <h1 class="auth-title">Welcome Back</h1>
-      <p class="auth-subtitle">Sign in to your account</p>
+      <h1 class="auth-title">Bienvenue</h1>
+      <p class="auth-subtitle">Connectez-vous à votre compte</p>
     </div>
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form">
@@ -26,7 +26,7 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="auth-field">
-        <mat-label>Password</mat-label>
+        <mat-label>Mot de passe</mat-label>
         <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'" autocomplete="current-password">
         <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
           <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
@@ -45,7 +45,7 @@
     </form>
 
     <div class="auth-footer">
-      <p>Don't have an account? <a routerLink="/auth/register">Sign up</a></p>
+      <p>Vous n'avez pas de compte ? <a routerLink="/auth/register">S'inscrire</a></p>
     </div>
   </div>
 </div>
