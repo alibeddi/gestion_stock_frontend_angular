@@ -1,7 +1,10 @@
 <div class="user-form-container">
-  <h2>{{ isEdit ? 'Edit User' : 'Add User' }}</h2>
+  <h2>{{ isEdit ? "Edit User" : "Add User" }}</h2>
 
-  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+  <mat-progress-spinner
+    *ngIf="isLoading"
+    mode="indeterminate"
+  ></mat-progress-spinner>
   <div *ngIf="error" class="error">{{ error }}</div>
 
   <form [formGroup]="userForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
@@ -15,7 +18,7 @@
           </mat-error>
         </mat-form-field>
       </div>
-      
+
       <div class="col-md-6">
         <mat-form-field class="full-width">
           <mat-label>Nom</mat-label>
@@ -48,9 +51,21 @@
 
     <mat-form-field class="full-width">
       <mat-label>Password</mat-label>
-      <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" [required]="!isEdit" />
-      <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
-        <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+      <input
+        matInput
+        [type]="hidePassword ? 'password' : 'text'"
+        formControlName="password"
+        [required]="!isEdit"
+      />
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="hidePassword = !hidePassword"
+        type="button"
+      >
+        <mat-icon>{{
+          hidePassword ? "visibility_off" : "visibility"
+        }}</mat-icon>
       </button>
       <mat-error *ngIf="userForm.get('password')?.hasError('required')">
         Le mot de passe est obligatoire
@@ -69,10 +84,65 @@
       </mat-error>
     </mat-form-field>
 
+    <!-- Permissions Section -->
+    <div class="permissions-section">
+      <h3>Permissions</h3>
+      <p class="permission-hint">
+        Select the direct permissions this user should have in addition to
+        role-based permissions.
+      </p>
+
+      <div class="categories-container">
+        <mat-card *ngFor="let category of categories" class="category-card">
+          <mat-card-header>
+            <mat-checkbox
+              [checked]="isCategorySelected(category)"
+              [indeterminate]="isCategoryIndeterminate(category)"
+              (change)="toggleCategory(category)"
+            >
+              {{ category }}
+            </mat-checkbox>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="permission-list">
+              <mat-checkbox
+                *ngFor="let permission of permissionsByCategory[category]"
+                [checked]="isPermissionSelected(permission)"
+                (change)="togglePermission(permission)"
+                class="permission-checkbox"
+              >
+                <div class="permission-item">
+                  <div class="permission-name">{{ permission.name }}</div>
+                  <div
+                    class="permission-description"
+                    *ngIf="permission.description"
+                  >
+                    {{ permission.description }}
+                  </div>
+                </div>
+              </mat-checkbox>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+
     <div class="button-container">
-      <button mat-stroked-button color="primary" type="button" (click)="cancel()">Cancel</button>
-      <button mat-raised-button color="accent" type="submit" [disabled]="userForm.invalid || isLoading">
-        {{ isEdit ? 'Update' : 'Create' }}
+      <button
+        mat-stroked-button
+        color="primary"
+        type="button"
+        (click)="cancel()"
+      >
+        Cancel
+      </button>
+      <button
+        mat-raised-button
+        color="accent"
+        type="submit"
+        [disabled]="userForm.invalid || isLoading"
+      >
+        {{ isEdit ? "Update" : "Create" }}
       </button>
     </div>
   </form>

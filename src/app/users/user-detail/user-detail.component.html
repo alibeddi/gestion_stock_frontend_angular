@@ -1,22 +1,122 @@
-<div class="user-detail-container">
-  <button mat-button color="primary" (click)="goBack()">
-    <mat-icon>arrow_back</mat-icon> Back to Users
-  </button>
+<div class="container">
+  <div class="header">
+    <h1>Détails de l'utilisateur</h1>
+    <button mat-raised-button color="primary" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+      Retour à la liste
+    </button>
+  </div>
 
-  <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
-  <div *ngIf="error" class="error">{{ error }}</div>
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
 
-  <mat-card *ngIf="!isLoading && !error && user">
-    
-    <mat-card-title>{{ user.prenom+' '+ user.nom }}</mat-card-title>
-    <mat-card-subtitle>ID: {{ user.id }}</mat-card-subtitle>
-    <mat-card-content>
-      <p><strong>Email:</strong> {{ user.email }}</p>
-      <p><strong>Role:</strong> {{ user.roles[0].libelle }}</p>
-      <!-- Add more fields as needed -->
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-raised-button color="primary" [routerLink]="['/settings/users/edit', user.id]">Edit</button>
-    </mat-card-actions>
-  </mat-card>
+  <div class="error-container" *ngIf="error">
+    <mat-card>
+      <mat-card-content>
+        <div class="error-message">
+          <mat-icon color="warn">error</mat-icon>
+          <span>{{ error }}</span>
+        </div>
+        <button mat-raised-button color="primary" (click)="goBack()">
+          Retour à la liste
+        </button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="user-content" *ngIf="user && !isLoading && !error">
+    <mat-card class="user-card">
+      <mat-card-header>
+        <mat-card-title>{{ user.prenom }} {{ user.nom }}</mat-card-title>
+        <mat-card-subtitle *ngIf="user.matricule">{{
+          user.matricule
+        }}</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div class="user-info-section">
+          <h2>Informations générales</h2>
+          <div class="user-info-grid">
+            <div class="info-item">
+              <span class="info-label">Email:</span>
+              <span class="info-value">{{ user.email }}</span>
+            </div>
+            <div class="info-item" *ngIf="user.telephone">
+              <span class="info-label">Téléphone:</span>
+              <span class="info-value">{{ user.telephone }}</span>
+            </div>
+            <div class="info-item" *ngIf="user.mobile">
+              <span class="info-label">Mobile:</span>
+              <span class="info-value">{{ user.mobile }}</span>
+            </div>
+            <div class="info-item" *ngIf="user.titre">
+              <span class="info-label">Titre:</span>
+              <span class="info-value">{{ user.titre }}</span>
+            </div>
+            <div class="info-item" *ngIf="user.adresse">
+              <span class="info-label">Adresse:</span>
+              <span class="info-value">{{ user.adresse }}</span>
+            </div>
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="user-security-section">
+          <h2>Sécurité et accès</h2>
+          <div class="user-security-grid">
+            <div class="info-item">
+              <span class="info-label">Rôles:</span>
+              <span class="info-value">{{ getRoleNames(user) }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Compte actif:</span>
+              <span class="info-value">
+                <mat-icon color="{{ user.enabled ? 'primary' : 'warn' }}">
+                  {{ user.enabled ? "check_circle" : "cancel" }}
+                </mat-icon>
+                {{ user.enabled ? "Oui" : "Non" }}
+              </span>
+            </div>
+          </div>
+
+          <div class="permissions-section">
+            <div class="permissions-header">
+              <h3>Permissions</h3>
+              <button
+                mat-raised-button
+                color="accent"
+                (click)="managePermissions()"
+              >
+                <mat-icon>edit</mat-icon>
+                Gérer les permissions
+              </button>
+            </div>
+            <div class="permissions-list" *ngIf="userPermissions.length > 0">
+              <mat-chip-set>
+                <mat-chip *ngFor="let permission of userPermissions">
+                  {{ permission.name }}
+                </mat-chip>
+              </mat-chip-set>
+            </div>
+            <div class="no-permissions" *ngIf="userPermissions.length === 0">
+              <p>Aucune permission directe attribuée à cet utilisateur.</p>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="editUser()">
+          <mat-icon>edit</mat-icon>
+          Modifier
+        </button>
+        <button mat-raised-button color="warn" (click)="deleteUser()">
+          <mat-icon>delete</mat-icon>
+          Supprimer
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
 </div>

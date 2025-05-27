@@ -1,0 +1,52 @@
+<h2 mat-dialog-title>{{ isEdit ? "Edit" : "Add" }} Permission</h2>
+
+<form [formGroup]="permissionForm" (ngSubmit)="onSubmit()">
+  <div mat-dialog-content>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" placeholder="e.g., users:read" />
+      <mat-hint
+        >Format: resource:action (e.g., users:read, clients:create)</mat-hint
+      >
+      <mat-error *ngIf="permissionForm.get('name')?.hasError('required')">
+        Name is required
+      </mat-error>
+      <mat-error *ngIf="permissionForm.get('name')?.hasError('pattern')">
+        Name must contain only lowercase letters, numbers, colons, and hyphens
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Description</mat-label>
+      <input
+        matInput
+        formControlName="description"
+        placeholder="e.g., View users"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Category</mat-label>
+      <mat-select formControlName="category">
+        <mat-option *ngFor="let category of categories" [value]="category">
+          {{ category }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="permissionForm.get('category')?.hasError('required')">
+        Category is required
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="onCancel()">Cancel</button>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="permissionForm.invalid"
+    >
+      {{ isEdit ? "Update" : "Create" }}
+    </button>
+  </div>
+</form>

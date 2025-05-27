@@ -4,7 +4,7 @@
   padding: 2rem;
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 mat-card {
   margin-top: 1.5rem;
@@ -19,4 +19,129 @@ mat-progress-spinner {
 }
 button[mat-button] {
   margin-bottom: 1rem;
+}
+
+.container {
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+
+  h1 {
+    margin: 0;
+  }
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0;
+}
+
+.error-container {
+  margin: 20px 0;
+
+  .error-message {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+
+    mat-icon {
+      margin-right: 10px;
+    }
+  }
+}
+
+.user-card {
+  margin-bottom: 20px;
+}
+
+.user-info-section,
+.user-security-section {
+  margin: 20px 0;
+
+  h2 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+}
+
+.user-info-grid,
+.user-security-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+
+  .info-label {
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.6);
+    margin-bottom: 4px;
+  }
+
+  .info-value {
+    display: flex;
+    align-items: center;
+
+    mat-icon {
+      margin-right: 8px;
+    }
+  }
+}
+
+mat-divider {
+  margin: 24px 0;
+}
+
+.permissions-section {
+  margin-top: 24px;
+
+  .permissions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+
+    h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+  }
+
+  .permissions-list {
+    margin-top: 12px;
+
+    mat-chip-set {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+  }
+
+  .no-permissions {
+    margin-top: 12px;
+    color: rgba(0, 0, 0, 0.6);
+    font-style: italic;
+  }
+}
+
+mat-card-actions {
+  display: flex;
+  gap: 12px;
+  padding: 16px !important;
 }
