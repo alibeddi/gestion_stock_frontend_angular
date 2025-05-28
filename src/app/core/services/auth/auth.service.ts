@@ -22,15 +22,27 @@ export class AuthService {
   ) {}
 
   login(loginRequest: LoginRequest): Observable<any> {
+    console.log("Attempting login with email:", loginRequest.email);
+
     return this.http.post<any>(`${this.BASE_URL}/login`, loginRequest).pipe(
-      tap((response) => {
-        console.log("Login response:", response);
-        if (response && response.data) {
-          console.log("Auth data:", response.data);
-          console.log("Authorities:", response.data.authorities);
-          this.tokenService.saveToken(response.data.accessToken);
-          this.tokenService.saveUser(response.data);
-        }
+      tap({
+        next: (response) => {
+          console.log("Login response:", response);
+          if (response && response.data) {
+            console.log("Auth data:", response.data);
+            console.log("Authorities:", response.data.authorities);
+            this.tokenService.saveToken(response.data.accessToken);
+            this.tokenService.saveUser(response.data);
+          } else {
+            console.warn("Login response missing data field:", response);
+          }
+        },
+        error: (error) => {
+          console.error("Login error details:", error);
+          console.error("Error status:", error.status);
+          console.error("Error message:", error.message);
+          console.error("Error response:", error.error);
+        },
       })
     );
   }

@@ -73,6 +73,34 @@
     </mat-form-field>
 
     <mat-form-field class="full-width">
+      <mat-label>Confirm Password</mat-label>
+      <input
+        matInput
+        [type]="hidePassword ? 'password' : 'text'"
+        formControlName="confirmPassword"
+        [required]="!isEdit"
+      />
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="hidePassword = !hidePassword"
+        type="button"
+      >
+        <mat-icon>{{
+          hidePassword ? "visibility_off" : "visibility"
+        }}</mat-icon>
+      </button>
+      <mat-error *ngIf="userForm.get('confirmPassword')?.hasError('required')">
+        Password confirmation is required
+      </mat-error>
+      <mat-error
+        *ngIf="userForm.get('confirmPassword')?.hasError('passwordMismatch')"
+      >
+        Passwords do not match
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
       <mat-label>Role</mat-label>
       <mat-select formControlName="role" required>
         <mat-option *ngFor="let role of roles" [value]="role.name">

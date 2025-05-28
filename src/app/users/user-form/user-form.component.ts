@@ -41,14 +41,20 @@ export class UserFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.userForm = this.fb.group({
-      username: ["", Validators.required],
-      email: ["", [Validators.required, Validators.email]],
-      nom: ["", Validators.required],
-      prenom: ["", Validators.required],
-      password: ["", Validators.required],
-      role: ["", Validators.required],
-    });
+    this.userForm = this.fb.group(
+      {
+        username: ["", Validators.required],
+        email: ["", [Validators.required, Validators.email]],
+        nom: ["", Validators.required],
+        prenom: ["", Validators.required],
+        password: ["", Validators.required],
+        confirmPassword: ["", Validators.required],
+        role: ["", Validators.required],
+      },
+      {
+        validators: this.passwordMatchValidator,
+      }
+    );
 
     // Load available roles and permissions
     this.loadInitialData();
@@ -62,6 +68,8 @@ export class UserFormComponent implements OnInit {
       // Remove password validation for edit mode
       this.userForm.get("password")?.clearValidators();
       this.userForm.get("password")?.updateValueAndValidity();
+      this.userForm.get("confirmPassword")?.clearValidators();
+      this.userForm.get("confirmPassword")?.updateValueAndValidity();
     }
   }
 
@@ -320,5 +328,18 @@ export class UserFormComponent implements OnInit {
           },
         });
     }
+  }
+
+  // Custom validator to check if password and confirmPassword match
+  passwordMatchValidator(formGroup: FormGroup) {
+    const password = formGroup.get("password")?.value;
+    const confirmPassword = formGroup.get("confirmPassword")?.value;
+
+    if (password !== confirmPassword) {
+      formGroup.get("confirmPassword")?.setErrors({ passwordMismatch: true });
+      return { passwordMismatch: true };
+    }
+
+    return null;
   }
 }
