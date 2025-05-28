@@ -12,7 +12,7 @@ interface NavItem {
   name: string;
   icon: string;
   route: string;
-  requiredPermission?: string;
+  requiredPermission?: string | string[];
 }
 
 @Component({
@@ -23,15 +23,48 @@ interface NavItem {
 export class SidebarComponent implements OnInit {
   navItems: NavItem[] = [
     { name: "Dashboard", icon: "dashboard", route: "/dashboard" },
-    { name: "Prospects", icon: "person_search", route: "/prospects" },
-    { name: "Clients", icon: "business", route: "/clients" },
-    { name: "Contacts", icon: "people", route: "/contacts" },
-    { name: "Emballages", icon: "inventory", route: "/emballages" },
-    
-    { name: "Produits", icon: "inventory_2", route: "/products" },
-    { name: "Devis", icon: "description", route: "/devis" },
-    
-    { name: "Paramètres", icon: "settings", route: "/settings",requiredPermission: "ADMIN", },
+    {
+      name: "Prospects",
+      icon: "person_search",
+      route: "/prospects",
+      requiredPermission: "prospects:read",
+    },
+    {
+      name: "Clients",
+      icon: "business",
+      route: "/clients",
+      requiredPermission: "clients:read",
+    },
+    {
+      name: "Contacts",
+      icon: "people",
+      route: "/contacts",
+      requiredPermission: "clients:read",
+    },
+    {
+      name: "Emballages",
+      icon: "inventory",
+      route: "/emballages",
+      requiredPermission: "products:read",
+    },
+    {
+      name: "Produits",
+      icon: "inventory_2",
+      route: "/products",
+      requiredPermission: "products:read",
+    },
+    {
+      name: "Devis",
+      icon: "description",
+      route: "/devis",
+      requiredPermission: "quotes:read",
+    },
+    {
+      name: "Paramètres",
+      icon: "settings",
+      route: "/settings",
+      requiredPermission: "ADMIN",
+    },
   ];
 
   currentRoute: string = "";
@@ -73,12 +106,14 @@ export class SidebarComponent implements OnInit {
     console.log("Attempting to navigate to:", route);
   }
 
-  hasPermission(permission?: string): boolean {
-    if (!permission) return true;
-    return this.authService.hasRole(permission);
-  }
-
   isActive(route: string): boolean {
     return this.currentRoute.startsWith(route);
+  }
+
+  isAdmin(): boolean {
+    console.log("Sidebar: Checking if user is admin");
+    const isAdmin = this.authService.isAdmin();
+    console.log("Sidebar: User is admin?", isAdmin);
+    return isAdmin;
   }
 }

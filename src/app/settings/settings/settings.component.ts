@@ -16,6 +16,7 @@ interface NavLink {
 })
 export class SettingsComponent implements OnInit {
   activeTab = 0;
+  isAdmin = false;
   navLinks: NavLink[] = [
     { path: "profile", label: "Profil", icon: "person" },
     { path: "company", label: "Entreprise", icon: "business" },
@@ -68,10 +69,26 @@ export class SettingsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Filtrer les liens en fonction des droits d'accès
-    this.filteredNavLinks = this.navLinks.filter(
-      (link) => !link.adminOnly || this.authService.isAdmin()
-    );
+    // Add debug logging
+    console.log("Settings: Checking if user is admin");
+    const user = this.authService.getCachedUser();
+    console.log("Settings: User object:", user);
+    this.isAdmin = this.authService.isAdmin();
+    console.log("Settings: User is admin?", this.isAdmin);
+    console.log("Settings: User roles:", user?.roles);
+    console.log("Settings: User authorities:", user?.authorities);
+    console.log("Settings: All navLinks before filtering:", this.navLinks);
+
+    // Regular filtering logic
+    if (this.isAdmin) {
+      console.log("Settings: User is admin, showing all links");
+      this.filteredNavLinks = [...this.navLinks];
+    } else {
+      // Filtrer les liens en fonction des droits d'accès
+      this.filteredNavLinks = this.navLinks.filter((link) => !link.adminOnly);
+    }
+
+    console.log("Settings: Filtered navLinks:", this.filteredNavLinks);
 
     // Determine the active tab based on the current route
     const path = this.router.url.split("/").pop();

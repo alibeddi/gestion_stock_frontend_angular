@@ -74,7 +74,7 @@ export class PermissionService {
 
   initializeDefaultPermissions(): Observable<ApiResponse<Permission[]>> {
     return this.http.post<ApiResponse<Permission[]>>(
-      `${this.API_URL}/initialize-defaults`,
+      `${this.API_URL}/init`,
       {}
     );
   }

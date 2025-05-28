@@ -19,11 +19,26 @@ const routes: Routes = [
   {
     path: "",
     component: SettingsComponent,
+    canActivate: [AuthGuard],
+    data: { roles: ["ADMIN"] },
     children: [
       { path: "", redirectTo: "profile", pathMatch: "full" },
-      { path: "profile", component: ProfileSettingsComponent },
-      { path: "company", component: CompanySettingsComponent },
-      { path: "security", component: SecuritySettingsComponent },
+      {
+        path: "profile",
+        component: ProfileSettingsComponent,
+        // Profile settings can be accessed by the logged-in user
+      },
+      {
+        path: "security",
+        component: SecuritySettingsComponent,
+        // Security settings can be accessed by the logged-in user
+      },
+      {
+        path: "company",
+        component: CompanySettingsComponent,
+        canActivate: [AuthGuard],
+        data: { roles: ["ADMIN"] },
+      },
       {
         path: "users",
         component: UserListComponent,
@@ -55,7 +70,7 @@ const routes: Routes = [
         data: { roles: ["ADMIN"] },
       },
       {
-        path: "secteurs", // Changed from 'secteur-activite' to match the path in settings.component.ts
+        path: "secteurs",
         component: SecteurActiviteListComponent,
         canActivate: [AuthGuard],
         data: { roles: ["ADMIN"] },
@@ -67,7 +82,7 @@ const routes: Routes = [
         data: { roles: ["ADMIN"] },
       },
       {
-        path: "paiements", // Changed from 'mode-paiement' to match the navigation link
+        path: "paiements",
         component: ModePaiementListComponent,
         canActivate: [AuthGuard],
         data: { roles: ["ADMIN"] },
