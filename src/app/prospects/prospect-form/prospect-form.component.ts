@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { ProspectService } from "../prospect.service";
+import { SecteurActiviteService } from "src/app/core/services/secteur-activite/secteur-activite.service";
+import { SourceProspectionService } from "src/app/core/services/source-prospection/source-prospection.service";
 
 @Component({
   selector: "app-prospect-form",
@@ -14,13 +16,17 @@ export class ProspectFormComponent implements OnInit {
   isLoading = false;
   isEditMode = false;
   prospectId: number | null = null;
+  sources: any[] = [];
+  secteurs: any[] = [];
 
   constructor(
     private fb: FormBuilder,
     private prospectService: ProspectService,
     private router: Router,
     private route: ActivatedRoute,
-    private toastr: ToastrService
+  private sourcesService: SourceProspectionService, // Ajoutez cette ligne :
+    private secteurService: SecteurActiviteService
+  
   ) {
     this.prospectForm = this.fb.group({
       nom: ["", Validators.required],
@@ -41,6 +47,8 @@ export class ProspectFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadSourceProspection();
+      this.loadSecteurs();
     const id = this.route.snapshot.paramMap.get("id");
     if (id) {
       this.isEditMode = true;
@@ -57,19 +65,38 @@ export class ProspectFormComponent implements OnInit {
         this.isLoading = false;
       },
       error: (error) => {
-        this.toastr.error("Erreur lors du chargement du prospect", "Erreur");
         console.error("Error loading prospect", error);
         this.isLoading = false;
+      },
+    });
+  }
+  loadSourceProspection(): void {
+   
+    this.sourcesService.getAllSources().subscribe({
+      next: (prospect) => {
+       this.sources = prospect.data || [];
+        
+      },
+      error: (error) => {
+        console.error("Error loading prospect", error);
+        this.isLoading = false;
+      },
+    });
+  }
+  loadSecteurs(): void {
+    this.secteurService.getAllSecteurs().subscribe({
+      next: (response) => {
+        this.secteurs = response.data || [];
+      },
+      error: (error) => {
+        console.error("Error loading secteurs", error);
       },
     });
   }
 
   saveProspect(): void {
     if (this.prospectForm.invalid) {
-      this.toastr.error(
-        "Veuillez corriger les erreurs dans le formulaire",
-        "Erreur"
-      );
+    
       return;
     }
 
@@ -81,15 +108,11 @@ export class ProspectFormComponent implements OnInit {
         .updateProspect(this.prospectId, prospectData)
         .subscribe({
           next: () => {
-            this.toastr.success("Prospect mis à jour avec succès", "Succès");
             this.router.navigate(["/prospects"]);
             this.isLoading = false;
           },
           error: (error) => {
-            this.toastr.error(
-              "Erreur lors de la mise à jour du prospect",
-              "Erreur"
-            );
+           
             console.error("Error updating prospect", error);
             this.isLoading = false;
           },
@@ -97,12 +120,10 @@ export class ProspectFormComponent implements OnInit {
     } else {
       this.prospectService.createProspect(prospectData).subscribe({
         next: () => {
-          this.toastr.success("Prospect créé avec succès", "Succès");
           this.router.navigate(["/prospects"]);
           this.isLoading = false;
         },
         error: (error) => {
-          this.toastr.error("Erreur lors de la création du prospect", "Erreur");
           console.error("Error creating prospect", error);
           this.isLoading = false;
         },

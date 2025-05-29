@@ -41,7 +41,7 @@ export class ProspectListComponent implements OnInit {
     private prospectService: ProspectService,
     private fb: FormBuilder,
     private router: Router,
-    private toastr: ToastrService
+  
   ) {
     this.filterForm = this.fb.group({
       nom: [""],
@@ -77,17 +77,15 @@ export class ProspectListComponent implements OnInit {
       .getProspects(filter, this.pageIndex, this.pageSize)
       .pipe(
         catchError((error) => {
-          this.toastr.error(
-            "Erreur lors du chargement des prospects",
-            "Erreur"
-          );
+         
           console.error("Error loading prospects", error);
           this.isLoading = false;
           return of({ content: [], totalElements: 0 });
         })
       )
       .subscribe((response) => {
-        this.dataSource.data = response.content || response;
+        this.dataSource.data = response.data || response;
+        console.log('response', response);
         this.totalItems = response.totalElements || response.length;
         this.isLoading = false;
       });
@@ -121,14 +119,10 @@ export class ProspectListComponent implements OnInit {
     if (confirm("Êtes-vous sûr de vouloir supprimer ce prospect ?")) {
       this.prospectService.deleteProspect(id).subscribe({
         next: () => {
-          this.toastr.success("Prospect supprimé avec succès", "Succès");
           this.loadProspects();
         },
         error: (error) => {
-          this.toastr.error(
-            "Erreur lors de la suppression du prospect",
-            "Erreur"
-          );
+          
           console.error("Error deleting prospect", error);
         },
       });
@@ -139,17 +133,11 @@ export class ProspectListComponent implements OnInit {
     if (confirm("Êtes-vous sûr de vouloir convertir ce prospect en client ?")) {
       this.prospectService.convertToClient(id).subscribe({
         next: () => {
-          this.toastr.success(
-            "Prospect converti en client avec succès",
-            "Succès"
-          );
+        
           this.loadProspects();
         },
         error: (error) => {
-          this.toastr.error(
-            "Erreur lors de la conversion du prospect",
-            "Erreur"
-          );
+        
           console.error("Error converting prospect", error);
         },
       });

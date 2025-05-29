@@ -103,4 +103,8 @@ export class SettingsComponent implements OnInit {
       relativeTo: this.route,
     });
   }
+
+  goToDashboard(): void {
+    this.router.navigate(['/dashboard']);
+  }
 }
