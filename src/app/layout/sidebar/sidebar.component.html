@@ -65,6 +65,17 @@
 
     <a
       mat-list-item
+      routerLink="/products"
+      routerLinkActive="active"
+      *ngIf="canAccessFeature('products.view')"
+    >
+      <mat-icon>inventory</mat-icon>
+      <span>Produits</span>
+    </a>
+
+
+    <a
+      mat-list-item
       routerLink="/settings"
       routerLinkActive="active"
       *ngIf="isAdmin()"
