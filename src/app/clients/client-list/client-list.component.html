@@ -1,13 +1,30 @@
 <div class="client-list-container mat-elevation-z2">
-  <div class="header-row">
+  <div class="clients-header">
     <h2>
       <mat-icon color="primary">people</mat-icon>
       Clients
     </h2>
-    <button mat-raised-button color="primary" (click)="createClient()">
-      <mat-icon>person_add</mat-icon>
-      Ajouter Client
-    </button>
+    <div class="header-actions">
+      <button
+        mat-raised-button
+        color="primary"
+        [routerLink]="['/clients/new']"
+        *appHasPermission="'clients:create'"
+      >
+        <mat-icon>add</mat-icon> Add Client
+      </button>
+
+      <!-- This section will only be visible to users with both read and export permissions -->
+      <div
+        class="export-section"
+        *appHasPermission="['clients:read', 'clients:export']"
+        appHasPermissionOp="AND"
+      >
+        <button mat-raised-button color="accent">
+          <mat-icon>file_download</mat-icon> Export Clients
+        </button>
+      </div>
+    </div>
   </div>
 
   <mat-expansion-panel [(expanded)]="filterExpanded">
@@ -139,6 +156,7 @@
             color="primary"
             matTooltip="Voir"
             (click)="viewClient(client.id)"
+            *appHasPermission="'clients:read'"
           >
             <mat-icon>visibility</mat-icon>
           </button>
@@ -147,6 +165,7 @@
             color="accent"
             matTooltip="Modifier"
             (click)="editClient(client.id)"
+            *appHasPermission="'clients:update'"
           >
             <mat-icon>edit</mat-icon>
           </button>
@@ -155,6 +174,7 @@
             color="warn"
             matTooltip="Supprimer"
             (click)="deleteClient(client.id)"
+            *appHasPermission="'clients:delete'"
           >
             <mat-icon>delete</mat-icon>
           </button>
@@ -178,3 +198,27 @@
   >
   </mat-paginator>
 </div>
+
+<!-- Permission-based statistics section -->
+<mat-card class="stats-card" *appFeatureAccess="'clients.view'">
+  <mat-card-header>
+    <mat-card-title>Client Statistics</mat-card-title>
+    <mat-card-subtitle>Overview of client data</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content class="stats-content">
+    <div class="stat-item">
+      <div class="stat-value">{{ (clients && clients.length) || 0 }}</div>
+      <div class="stat-label">Total Clients</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">{{ getActiveClientCount() }}</div>
+      <div class="stat-label">Active Clients</div>
+    </div>
+    <div class="stat-item" *appHasPermission="'clients:analytics'">
+      <div class="stat-value">
+        {{ getAverageOrderValue() | currency : "EUR" }}
+      </div>
+      <div class="stat-label">Avg. Order Value</div>
+    </div>
+  </mat-card-content>
+</mat-card>

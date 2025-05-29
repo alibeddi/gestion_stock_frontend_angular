@@ -1,14 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
-import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute, Router } from "@angular/router";
-import { forkJoin } from "rxjs";
-import {
-  Permission,
-  PermissionService,
-} from "../../settings/permission/permission.service";
 import { ConfirmDialogComponent } from "../../shared/components/confirm-dialog/confirm-dialog.component";
-import { UserPermissionsDialogComponent } from "../user-permissions-dialog/user-permissions-dialog.component";
 import { User, UserService } from "../user.service";
 
 @Component({
@@ -18,150 +11,119 @@ import { User, UserService } from "../user.service";
 })
 export class UserDetailComponent implements OnInit {
   user: User | null = null;
-  isLoading = false;
+  isLoading = true;
   error: string | null = null;
-  userPermissions: Permission[] = [];
-  allPermissions: Permission[] = [];
-  permissionsByCategory: { [category: string]: Permission[] } = {};
-  categories: string[] = [];
+  userId: number = 0;
 
   constructor(
+    private userService: UserService,
     private route: ActivatedRoute,
     private router: Router,
-    private userService: UserService,
-    private permissionService: PermissionService,
-    private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get("id"));
-    if (id) {
-      this.fetchUser(id);
-    } else {
-      this.error = "Invalid user ID.";
-    }
-  }
-
-  fetchUser(id: number): void {
-    this.isLoading = true;
-    this.userService.getUser(id).subscribe({
-      next: (response) => {
-        this.user = response;
+    this.route.paramMap.subscribe((params) => {
+      const idParam = params.get("id");
+      if (idParam) {
+        this.userId = +idParam;
+        this.loadUser();
+      } else {
+        this.error = "ID utilisateur manquant";
         this.isLoading = false;
-        this.loadPermissions(id);
-      },
-      error: (error) => {
-        this.error = "Failed to load user.";
-        this.isLoading = false;
-        console.error(error);
-      },
+      }
     });
   }
 
-  loadPermissions(userId: number): void {
+  loadUser(): void {
     this.isLoading = true;
-    forkJoin({
-      userPermissions: this.userService.getUserPermissions(userId),
-      allPermissions: this.permissionService.getAllPermissions(),
-    }).subscribe({
-      next: (results) => {
-        this.userPermissions = results.userPermissions.data;
-        this.allPermissions = results.allPermissions.data;
+    this.error = null;
 
-        // Group permissions by category
-        this.categories = [
-          ...new Set(
-            this.allPermissions.map((p) => p.category || "Uncategorized")
-          ),
-        ].sort();
-        this.permissionsByCategory = {};
-
-        for (const category of this.categories) {
-          this.permissionsByCategory[category] = this.allPermissions.filter(
-            (p) => (p.category || "Uncategorized") === category
-          );
-        }
-
+    this.userService.getUser(this.userId).subscribe({
+      next: (user) => {
+        this.user = user;
         this.isLoading = false;
       },
       error: (error) => {
-        this.error = "Failed to load permissions.";
+        console.error("Error loading user:", error);
+        this.error = "Impossible de charger les détails de l'utilisateur";
         this.isLoading = false;
-        console.error(error);
       },
     });
   }
 
   editUser(): void {
-    if (this.user && this.user.id) {
-      this.router.navigate(["/users/edit", this.user.id]);
-    }
+    this.router.navigate(["/settings/users/edit", this.userId]);
   }
 
-  deleteUser(): void {
+  confirmDelete(): void {
     if (!this.user) return;
 
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: "350px",
+      width: "400px",
       data: {
-        title: "Confirm Deletion",
-        message: `Are you sure you want to delete ${this.user.prenom} ${this.user.nom}?`,
+        title: "Confirmer la suppression",
+        message: `Êtes-vous sûr de vouloir supprimer l'utilisateur ${this.user.prenom} ${this.user.nom}?`,
+        confirmText: "Supprimer",
+        cancelText: "Annuler",
       },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result && this.user && this.user.id) {
-        this.isLoading = true;
-        this.userService.deleteUser(this.user.id).subscribe({
-          next: () => {
-            this.snackBar.open("User deleted successfully", "Close", {
-              duration: 3000,
-            });
-            this.router.navigate(["/users"]);
-          },
-          error: (error) => {
-            this.isLoading = false;
-            this.error = "Failed to delete user.";
-            console.error(error);
-          },
-        });
+      if (result) {
+        this.deleteUser();
       }
     });
   }
 
-  getRoleNames(user: User): string {
-    if (user.roles && user.roles.length > 0) {
-      return user.roles.map((role) => role.libelle || role.name).join(", ");
-    }
-    return "No roles assigned";
-  }
+  deleteUser(): void {
+    if (!this.userId) return;
 
-  managePermissions(): void {
-    if (!this.user || !this.user.id) return;
-
-    const dialogRef = this.dialog.open(UserPermissionsDialogComponent, {
-      width: "800px",
-      data: {
-        user: this.user,
-        userPermissions: this.userPermissions,
-        allPermissions: this.allPermissions,
-        permissionsByCategory: this.permissionsByCategory,
-        categories: this.categories,
+    this.isLoading = true;
+    this.userService.deleteUser(this.userId).subscribe({
+      next: () => {
+        this.router.navigate(["/settings/users"]);
+      },
+      error: (error) => {
+        console.error("Error deleting user:", error);
+        this.error = "Impossible de supprimer l'utilisateur";
+        this.isLoading = false;
       },
     });
+  }
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result && result.updated) {
-        this.fetchUser(this.user!.id!);
-        this.snackBar.open("User permissions updated successfully", "Close", {
-          duration: 3000,
-        });
-      }
-    });
+  getInitials(): string {
+    if (!this.user) return "";
+    const prenom = this.user.prenom ? this.user.prenom.charAt(0) : "";
+    const nom = this.user.nom ? this.user.nom.charAt(0) : "";
+    return (prenom + nom).toUpperCase();
+  }
+
+  getAvatarColor(): string {
+    if (!this.user) return "#cccccc";
+    // Generate a deterministic color based on user id
+    const colors = [
+      "#f44336",
+      "#e91e63",
+      "#9c27b0",
+      "#673ab7",
+      "#3f51b5",
+      "#2196f3",
+      "#03a9f4",
+      "#00bcd4",
+      "#009688",
+      "#4caf50",
+      "#8bc34a",
+      "#cddc39",
+      "#ffc107",
+      "#ff9800",
+      "#ff5722",
+    ];
+    const colorIndex = this.user.id % colors.length;
+    return colors[colorIndex];
   }
 
   goBack(): void {
-    this.router.navigate(["../"], { relativeTo: this.route });
+    this.router.navigate(["/settings/users"]);
   }
 }

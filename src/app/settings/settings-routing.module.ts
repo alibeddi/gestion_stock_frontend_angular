@@ -1,6 +1,7 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { AuthGuard } from "../core/guards/auth.guard";
+import { FeatureAccessGuard } from "../core/guards/feature-access.guard";
 import { UserDetailComponent } from "../users/user-detail/user-detail.component";
 import { UserFormComponent } from "../users/user-form/user-form.component";
 import { UserListComponent } from "../users/user-list/user-list.component";
@@ -36,8 +37,8 @@ const routes: Routes = [
       {
         path: "company",
         component: CompanySettingsComponent,
-        canActivate: [AuthGuard],
-        data: { roles: ["ADMIN"] },
+        canActivate: [AuthGuard, FeatureAccessGuard],
+        data: { roles: ["ADMIN"], requiredFeature: "settings.update" },
       },
       {
         path: "users",
@@ -66,38 +67,38 @@ const routes: Routes = [
       {
         path: "gouvernorats",
         component: GouvernoratListComponent,
-        canActivate: [AuthGuard],
-        data: { roles: ["ADMIN"] },
+        canActivate: [AuthGuard, FeatureAccessGuard],
+        data: { roles: ["ADMIN"], requiredFeature: "settings.view" },
       },
       {
         path: "secteurs",
         component: SecteurActiviteListComponent,
-        canActivate: [AuthGuard],
-        data: { roles: ["ADMIN"] },
+        canActivate: [AuthGuard, FeatureAccessGuard],
+        data: { roles: ["ADMIN"], requiredFeature: "settings.view" },
       },
       {
         path: "sources",
         component: SourceProspectionListComponent,
-        canActivate: [AuthGuard],
-        data: { roles: ["ADMIN"] },
+        canActivate: [AuthGuard, FeatureAccessGuard],
+        data: { roles: ["ADMIN"], requiredFeature: "settings.view" },
       },
       {
         path: "paiements",
         component: ModePaiementListComponent,
-        canActivate: [AuthGuard],
-        data: { roles: ["ADMIN"] },
+        canActivate: [AuthGuard, FeatureAccessGuard],
+        data: { roles: ["ADMIN"], requiredFeature: "settings.view" },
       },
       {
         path: "roles",
         component: RoleListComponent,
-        canActivate: [AuthGuard],
-        data: { roles: ["ADMIN"] },
+        canActivate: [AuthGuard, FeatureAccessGuard],
+        data: { roles: ["ADMIN"], requiredFeature: "roles.view" },
       },
       {
         path: "permissions",
         component: PermissionListComponent,
-        canActivate: [AuthGuard],
-        data: { roles: ["ADMIN"] },
+        canActivate: [AuthGuard, FeatureAccessGuard],
+        data: { roles: ["ADMIN"], requiredFeature: "roles.view" },
       },
     ],
   },

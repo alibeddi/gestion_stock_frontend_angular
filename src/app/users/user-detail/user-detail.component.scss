@@ -1,4 +1,150 @@
 .user-detail-container {
+  padding: 20px;
+
+  .header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    h2 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 500;
+    }
+
+    .actions {
+      button {
+        margin-left: 10px;
+      }
+    }
+  }
+
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    margin: 50px 0;
+  }
+
+  .error-alert {
+    display: flex;
+    align-items: center;
+    padding: 10px 16px;
+    margin-bottom: 20px;
+    background-color: #ffebee;
+    border-radius: 4px;
+    border-left: 4px solid #f44336;
+
+    mat-icon {
+      margin-right: 10px;
+    }
+
+    span {
+      flex: 1;
+      color: #d32f2f;
+    }
+  }
+
+  .user-detail-content {
+    .user-profile-card {
+      padding: 24px;
+
+      .user-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 24px;
+
+        .user-avatar {
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: white;
+          font-weight: 500;
+          font-size: 32px;
+          margin-right: 24px;
+        }
+
+        .user-name {
+          h3 {
+            margin: 0 0 8px 0;
+            font-size: 24px;
+            font-weight: 500;
+          }
+
+          .role {
+            margin: 0;
+            color: #666;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+          }
+        }
+      }
+
+      .user-info-section {
+        margin: 24px 0;
+
+        h4 {
+          font-size: 18px;
+          font-weight: 500;
+          margin: 0 0 16px 0;
+          color: #333;
+        }
+
+        .info-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+          gap: 16px;
+
+          .info-item {
+            display: flex;
+            flex-direction: column;
+
+            .label {
+              font-size: 12px;
+              color: #666;
+              margin-bottom: 4px;
+            }
+
+            .value {
+              font-size: 16px;
+
+              &.status {
+                display: flex;
+                align-items: center;
+
+                mat-icon {
+                  margin-right: 8px;
+                  font-size: 18px;
+                  height: 18px;
+                  width: 18px;
+                }
+
+                &.active {
+                  color: #4caf50;
+                }
+              }
+            }
+          }
+        }
+
+        .roles-list {
+          margin-top: 8px;
+        }
+
+        .no-data {
+          color: #666;
+          font-style: italic;
+        }
+      }
+    }
+  }
+}
+
+.user-detail-container {
   max-width: 600px;
   margin: 2rem auto;
   padding: 2rem;

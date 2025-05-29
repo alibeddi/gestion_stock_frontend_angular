@@ -15,6 +15,9 @@ export class AuthService {
   private readonly BASE_URL = "http://localhost:8080/api/auth";
   private baseUrl = `${environment.apiUrl}`;
 
+  // For development purposes - set to false to check actual admin roles
+  private devMode = false;
+
   constructor(
     private http: HttpClient,
     private tokenService: TokenService,
@@ -152,6 +155,12 @@ export class AuthService {
   }
 
   isAdmin(): boolean {
+    // In development mode, always return true
+    if (this.devMode) {
+      console.log("[DEV MODE] User is considered an admin");
+      return true;
+    }
+
     const user = this.getCachedUser();
     console.log("Checking if user is admin:", user);
 

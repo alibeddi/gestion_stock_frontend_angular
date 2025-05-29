@@ -1,6 +1,7 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { AuthGuard } from "./core/guards/auth.guard";
+import { FeatureAccessGuard } from "./core/guards/feature-access.guard";
 import { MainLayoutComponent } from "./layout/main-layout/main-layout.component";
 
 const routes: Routes = [
@@ -23,11 +24,15 @@ const routes: Routes = [
         path: "clients",
         loadChildren: () =>
           import("./clients/clients.module").then((m) => m.ClientsModule),
+        canActivate: [FeatureAccessGuard],
+        data: { requiredFeature: "clients.view" },
       },
       {
         path: "prospects",
         loadChildren: () =>
           import("./prospects/prospects.module").then((m) => m.ProspectsModule),
+        canActivate: [FeatureAccessGuard],
+        data: { requiredFeature: "prospects.view" },
       },
       // {
       //   path: "products",
@@ -38,11 +43,15 @@ const routes: Routes = [
         path: "devis",
         loadChildren: () =>
           import("./devis/devis.module").then((m) => m.DevisModule),
+        canActivate: [FeatureAccessGuard],
+        data: { requiredFeature: "quotes.view" },
       },
       {
         path: "contacts",
         loadChildren: () =>
           import("./contacts/contacts.module").then((m) => m.ContactsModule),
+        canActivate: [FeatureAccessGuard],
+        data: { requiredFeature: "clients.view" },
       },
       // Supprimez ou commentez la route users suivante :
       /*
@@ -57,6 +66,8 @@ const routes: Routes = [
         path: "emballages",
         loadChildren: () =>
           import("./emballage/emballage.module").then((m) => m.EmballageModule),
+        canActivate: [FeatureAccessGuard],
+        data: { requiredFeature: "products.view" },
       },
     ],
   },

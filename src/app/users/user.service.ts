@@ -1,7 +1,9 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, map } from "rxjs";
+import { Router } from "@angular/router";
+import { Observable, catchError, map, throwError } from "rxjs";
 import { environment } from "../../environments/environment";
+import { AuthService } from "../core/services/auth/auth.service";
 import { Permission } from "../settings/permission/permission.service";
 
 export interface ApiResponse<T> {
@@ -35,12 +37,53 @@ export interface User {
 export class UserService {
   private BASE_URL = `${environment.apiUrl}/users`;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private authService: AuthService
+  ) {}
+
+  private handleError(error: HttpErrorResponse) {
+    console.error("API Error:", error);
+
+    if (error.status === 401) {
+      console.log("Authentication error - redirecting to login");
+      // Optional: Clear auth tokens
+      // this.authService.logout();
+      this.router.navigate(["/auth/login"]);
+    }
+
+    return throwError(() => error);
+  }
 
   getUsers(): Observable<User[]> {
-    return this.http
-      .get<ApiResponse<User[]>>(this.BASE_URL)
-      .pipe(map((response) => response.data));
+    console.log("UserService: Fetching users from", this.BASE_URL);
+
+    return this.http.get<any>(this.BASE_URL).pipe(
+      map((response) => {
+        console.log("UserService: Raw API response:", response);
+
+        // Handle different response formats
+        if (Array.isArray(response)) {
+          console.log("UserService: Response is a direct array");
+          return response;
+        } else if (response && response.data && Array.isArray(response.data)) {
+          console.log("UserService: Response has data array property");
+          return response.data;
+        } else if (
+          response &&
+          response.content &&
+          Array.isArray(response.content)
+        ) {
+          console.log("UserService: Response has content array property");
+          return response.content;
+        } else {
+          console.error("UserService: Unexpected response format", response);
+          return [];
+        }
+      }),
+      catchError(this.handleError.bind(this))
+    );
   }
 
   getUser(id: number): Observable<User> {

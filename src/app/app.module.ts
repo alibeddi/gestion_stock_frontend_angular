@@ -10,6 +10,7 @@ import { CoreModule } from "./core/core.module";
 import { AuthInterceptor } from "./core/interceptors/auth.interceptor";
 import { ErrorInterceptor } from "./core/interceptors/error.interceptor";
 import { LayoutModule } from "./layout/layout.module";
+import { MaterialModule } from "./material.module";
 import { SharedModule } from "./shared/shared.module";
 
 @NgModule({
@@ -23,6 +24,7 @@ import { SharedModule } from "./shared/shared.module";
     CoreModule,
     SharedModule,
     LayoutModule,
+    MaterialModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

@@ -10,20 +10,34 @@ export interface ConfirmDialogData {
 
 @Component({
   selector: "app-confirm-dialog",
-  templateUrl: "./confirm-dialog.component.html",
-  styleUrls: ["./confirm-dialog.component.scss"],
+  template: `
+    <h2 mat-dialog-title>{{ data.title }}</h2>
+    <mat-dialog-content>
+      <p>{{ data.message }}</p>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button [mat-dialog-close]="false">
+        {{ data.cancelText || "Cancel" }}
+      </button>
+      <button mat-raised-button color="warn" [mat-dialog-close]="true">
+        {{ data.confirmText || "Confirm" }}
+      </button>
+    </mat-dialog-actions>
+  `,
+  styles: [
+    `
+      mat-dialog-content {
+        min-width: 300px;
+      }
+      mat-dialog-actions {
+        margin-top: 20px;
+      }
+    `,
+  ],
 })
 export class ConfirmDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<ConfirmDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ConfirmDialogData
   ) {}
-
-  onCancel(): void {
-    this.dialogRef.close(false);
-  }
-
-  onConfirm(): void {
-    this.dialogRef.close(true);
-  }
 }

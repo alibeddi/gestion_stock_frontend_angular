@@ -41,38 +41,37 @@ export class HasPermissionDirective implements OnInit {
     // Clear the container first
     this.viewContainer.clear();
 
-    // Debug information
-    console.log(
-      "HasPermissionDirective checking permissions:",
-      this.permissions
-    );
-    console.log("User object:", this.authService.getCachedUser());
-    console.log("Is Admin?", this.authService.isAdmin());
-
-    // If no permissions are required, show the element
+    // If no permissions are specified, show the element
     if (!this.permissions || this.permissions.length === 0) {
-      console.log("No permissions required, showing element");
       this.viewContainer.createEmbeddedView(this.templateRef);
       return;
     }
 
-    const hasPermission =
-      this.logicalOp === "AND"
-        ? this.authService.hasAllPermissions(this.permissions)
-        : this.authService.hasAnyPermission(this.permissions);
-
-    console.log("Has permission?", hasPermission);
-
-    // Admin always has access
-    const isAdmin = this.authService.isAdmin();
-    console.log("Admin check in directive:", isAdmin);
-
-    if (hasPermission || isAdmin) {
-      console.log("User has permission or is admin, showing element");
-      // Add the template to the view
+    // Admin users always have access to everything
+    if (this.authService.isAdmin()) {
+      console.log("User is admin, permission granted");
       this.viewContainer.createEmbeddedView(this.templateRef);
+      return;
+    }
+
+    // Check if user has required permissions
+    let hasPermission: boolean;
+
+    if (this.logicalOp === "OR") {
+      hasPermission = this.authService.hasAnyPermission(this.permissions);
     } else {
-      console.log("User does not have permission, hiding element");
+      hasPermission = this.authService.hasAllPermissions(this.permissions);
+    }
+
+    console.log(
+      `Permission check for "${this.permissions.join(", ")}" with ${
+        this.logicalOp
+      } operator: ${hasPermission}`
+    );
+
+    if (hasPermission) {
+      // Add the template to the view if user has permissions
+      this.viewContainer.createEmbeddedView(this.templateRef);
     }
   }
 }

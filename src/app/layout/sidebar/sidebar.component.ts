@@ -7,6 +7,7 @@ import {
 } from "@angular/router";
 import { environment } from "../../../environments/environment";
 import { AuthService } from "../../core/services/auth/auth.service";
+import { PermissionCheckService } from "../../core/services/permission/permission-check.service";
 
 interface NavItem {
   name: string;
@@ -71,7 +72,11 @@ export class SidebarComponent implements OnInit {
   appVersion: string = environment.version || "1.0.0";
   currentYear: number = new Date().getFullYear();
 
-  constructor(private router: Router, private authService: AuthService) {
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    public permissionService: PermissionCheckService
+  ) {
     // Subscribe to all router events with more specific tracking
     this.router.events.subscribe((event) => {
       console.log("Router Event Type:", event.constructor.name);
@@ -115,5 +120,20 @@ export class SidebarComponent implements OnInit {
     const isAdmin = this.authService.isAdmin();
     console.log("Sidebar: User is admin?", isAdmin);
     return isAdmin;
+  }
+
+  /**
+   * Check if the user can access a specific feature
+   * @param featureKey The feature key to check
+   * @returns true if the user is admin or has the specific permission
+   */
+  canAccessFeature(featureKey: string): boolean {
+    // Admin can access all features
+    if (this.isAdmin()) {
+      return true;
+    }
+
+    // Non-admin users need specific permission
+    return this.permissionService.canAccess(featureKey);
   }
 }

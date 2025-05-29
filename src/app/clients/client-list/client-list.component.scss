@@ -4,7 +4,8 @@
   border-radius: 16px;
   margin: 32px auto;
   max-width: 1200px;
-  box-shadow: 0 4px 24px rgba(60, 72, 88, 0.08), 0 1.5px 6px rgba(60, 72, 88, 0.04);
+  box-shadow: 0 4px 24px rgba(60, 72, 88, 0.08),
+    0 1.5px 6px rgba(60, 72, 88, 0.04);
 }
 
 .header-row {
@@ -88,7 +89,8 @@ tr.mat-row:hover {
   transition: background 0.2s;
 }
 
-td.mat-cell, th.mat-header-cell {
+td.mat-cell,
+th.mat-header-cell {
   padding: 14px 12px;
 }
 
@@ -125,5 +127,50 @@ mat-paginator {
   }
   .header-row h2 {
     font-size: 1.3rem;
+  }
+}
+
+.clients-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+
+  .header-actions {
+    display: flex;
+    gap: 10px;
+
+    .export-section {
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+
+.stats-card {
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+  .stats-content {
+    display: flex;
+    justify-content: space-around;
+    padding: 15px 0;
+
+    .stat-item {
+      text-align: center;
+      padding: 0 15px;
+
+      .stat-value {
+        font-size: 24px;
+        font-weight: 500;
+        color: #3f51b5;
+      }
+
+      .stat-label {
+        font-size: 14px;
+        color: rgba(0, 0, 0, 0.6);
+        margin-top: 5px;
+      }
+    }
   }
 }

@@ -33,6 +33,7 @@ export class ClientListComponent implements OnInit {
   pageIndex = 0;
   filterExpanded = false;
   secteurActivites: SecteurActivite[] = [];
+  clients: Client[] = [];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -104,6 +105,7 @@ export class ClientListComponent implements OnInit {
           this.dataSource.data = clients;
           this.totalItems = totalElements;
           this.isLoading = false;
+          this.clients = clients;
         },
         error: (error) => {
           console.error("Error loading clients", error);
@@ -170,5 +172,22 @@ export class ClientListComponent implements OnInit {
         console.error("Failed to load secteur activites", error);
       },
     });
+  }
+
+  // New methods for client statistics
+  getActiveClientCount(): number {
+    if (!this.clients) return 0;
+    // Since our Client model doesn't have a specific active field,
+    // we'll just return a mock count for demonstration purposes
+    return Math.round(this.clients.length * 0.7); // Assume 70% of clients are active
+  }
+
+  getAverageOrderValue(): number {
+    if (!this.clients || this.clients.length === 0) return 0;
+
+    // Example implementation - replace with actual logic based on your data model
+    // In a real application, this would likely come from a separate API call
+    // or be calculated from order data associated with clients
+    return 1250.75;
   }
 }
