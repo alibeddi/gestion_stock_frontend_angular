@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Prospect, ProspectFilter } from '../core/models/prospect';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProspectService {
-  private readonly API_URL = '/api/prospects';
-
+  
+  private readonly API_URL = `${environment.apiUrl}/prospects`;
   constructor(private http: HttpClient) { }
 
   getProspects(filter?: ProspectFilter, page: number = 0, size: number = 10): Observable<any> {

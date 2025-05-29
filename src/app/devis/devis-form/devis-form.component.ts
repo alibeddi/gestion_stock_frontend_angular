@@ -3,6 +3,9 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { finalize } from "rxjs/operators";
 import { DevisService } from "../../core/services/devis/devis.service";
+import { ClientService } from "src/app/clients/client.service";
+import { ToastrService } from "ngx-toastr";
+import { ProspectService } from "src/app/prospects/prospect.service";
 
 @Component({
   selector: "app-devis-form",
@@ -16,17 +19,23 @@ export class DevisFormComponent implements OnInit {
   error: string | null = null;
   editMode = false;
   devisId: number | null = null;
+  clients: any[] = [];
+  prospects: any[] = [];
 
   constructor(
     private fb: FormBuilder,
     private devisService: DevisService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private clientService: ClientService,
+    private prospectService: ProspectService,
+
   ) {}
 
   ngOnInit(): void {
     this.initForm();
-
+    this.loadClients();
+    this.loadProspects();
     const id = this.route.snapshot.paramMap.get("id");
     if (id) {
       this.editMode = true;
@@ -46,7 +55,28 @@ export class DevisFormComponent implements OnInit {
       modePaiement: [null],
     });
   }
-
+loadClients(): void {
+        this.clientService.getClients().subscribe({
+            next: (response) => {
+                this.clients = response.data || [];
+            },
+            error: (error) => {
+                this.error = 'Error loading clients';
+                console.error('Error loading clients:', error);
+            }
+        });
+    }
+    loadProspects(): void {
+      this.prospectService.getProspects().subscribe({
+          next: (response) => {
+              this.prospects = response.data || [];
+          },
+          error: (error) => {
+              this.error = 'Error loading prospects';
+              console.error('Error loading prospects:', error);
+          }
+      });
+  }
   loadDevis(id: number): void {
     this.isLoading = true;
     this.error = null;

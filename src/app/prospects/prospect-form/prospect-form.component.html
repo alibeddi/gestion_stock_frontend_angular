@@ -81,7 +81,9 @@
             <mat-label>Secteur d'activité</mat-label>
             <mat-select formControlName="secteurActiviteId">
               <mat-option [value]="null">Non spécifié</mat-option>
-              <!-- Options will be loaded dynamically -->
+              <mat-option *ngFor="let secteur of secteurs" [value]="secteur.id">
+                {{ secteur.libelle }}
+            </mat-option>
             </mat-select>
           </mat-form-field>
 
@@ -89,7 +91,9 @@
             <mat-label>Source de prospection</mat-label>
             <mat-select formControlName="sourceProspectionId">
               <mat-option [value]="null">Non spécifié</mat-option>
-              <!-- Options will be loaded dynamically -->
+              <mat-option *ngFor="let source of sources" [value]="source.id">
+                {{ source.libelle }}
+            </mat-option>
             </mat-select>
           </mat-form-field>
         </div>

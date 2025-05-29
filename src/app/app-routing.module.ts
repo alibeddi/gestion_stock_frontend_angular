@@ -34,11 +34,11 @@ const routes: Routes = [
         canActivate: [FeatureAccessGuard],
         data: { requiredFeature: "prospects.view" },
       },
-      // {
-      //   path: "products",
-      //   loadChildren: () =>
-      //     import("./products/products.module").then((m) => m.ProductsModule),
-      // },
+      {
+        path: "products",
+        loadChildren: () =>
+          import("./products/products.module").then((m) => m.ProductsModule),
+      },
       {
         path: "devis",
         loadChildren: () =>

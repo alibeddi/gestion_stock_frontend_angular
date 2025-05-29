@@ -43,7 +43,9 @@
               <mat-label>Client</mat-label>
               <mat-select formControlName="client">
                 <mat-option [value]="null">Sélectionnez un client</mat-option>
-                <!-- Client options would be added here -->
+                <mat-option *ngFor="let client of clients" [value]="client.id">
+                  {{ client.nom }}
+              </mat-option>
               </mat-select>
             </mat-form-field>
           </div>
@@ -53,7 +55,9 @@
               <mat-label>Prospect</mat-label>
               <mat-select formControlName="prospect">
                 <mat-option [value]="null">Sélectionnez un prospect</mat-option>
-                <!-- Prospect options would be added here -->
+                <mat-option *ngFor="let prospect of prospects" [value]="prospect.id">
+                  {{ prospect.nom }}
+              </mat-option>
               </mat-select>
             </mat-form-field>
           </div>
