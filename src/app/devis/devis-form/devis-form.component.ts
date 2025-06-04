@@ -34,6 +34,7 @@ export class DevisFormComponent implements OnInit {
     this.initForm();
     this.loadClients();
     this.loadProspects();
+
     const id = this.route.snapshot.paramMap.get("id");
     if (id) {
       this.editMode = true;
@@ -52,7 +53,26 @@ export class DevisFormComponent implements OnInit {
       modeLivraison: [null],
       modePaiement: [null],
     });
+
+    this.devisForm.get("client")!.valueChanges.subscribe((clientId) => {
+      const prospectControl = this.devisForm.get("prospect");
+      if (clientId) {
+        prospectControl?.disable({ emitEvent: false });
+      } else {
+        prospectControl?.enable({ emitEvent: false });
+      }
+    });
+
+    this.devisForm.get("prospect")!.valueChanges.subscribe((prospectId) => {
+      const clientControl = this.devisForm.get("client");
+      if (prospectId) {
+        clientControl?.disable({ emitEvent: false });
+      } else {
+        clientControl?.enable({ emitEvent: false });
+      }
+    });
   }
+
   loadClients(): void {
     this.clientService.getClients().subscribe({
       next: (response) => {
@@ -64,6 +84,7 @@ export class DevisFormComponent implements OnInit {
       },
     });
   }
+
   loadProspects(): void {
     this.prospectService.getProspects().subscribe({
       next: (response) => {
@@ -75,6 +96,7 @@ export class DevisFormComponent implements OnInit {
       },
     });
   }
+
   loadDevis(id: number): void {
     this.isLoading = true;
     this.error = null;
@@ -86,6 +108,16 @@ export class DevisFormComponent implements OnInit {
         next: (response) => {
           if (response && response.data) {
             this.devisForm.patchValue(response.data);
+
+            const clientId = this.devisForm.get("client")?.value;
+            const prospectId = this.devisForm.get("prospect")?.value;
+
+            if (clientId) {
+              this.devisForm.get("prospect")?.disable({ emitEvent: false });
+            }
+            if (prospectId) {
+              this.devisForm.get("client")?.disable({ emitEvent: false });
+            }
           } else {
             this.error = "Format de réponse inattendu";
           }
@@ -98,16 +130,12 @@ export class DevisFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.devisForm.invalid) {
-      return;
-    }
+    if (this.devisForm.invalid) return;
 
     this.isSubmitting = true;
     this.error = null;
 
     const formValues = this.devisForm.value;
-
-    // Create a new devis object with properly formatted client and prospect
     const devis = {
       ...formValues,
       client: formValues.client ? { id: formValues.client } : null,
@@ -120,9 +148,7 @@ export class DevisFormComponent implements OnInit {
         : this.devisService.createDevis(devis);
 
     request.pipe(finalize(() => (this.isSubmitting = false))).subscribe({
-      next: () => {
-        this.router.navigate(["/devis"]);
-      },
+      next: () => this.router.navigate(["/devis"]),
       error: (err) => {
         console.error("Error saving devis:", err);
         this.error = "Erreur lors de l'enregistrement du devis";
