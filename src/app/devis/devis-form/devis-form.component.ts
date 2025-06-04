@@ -2,10 +2,9 @@ import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { finalize } from "rxjs/operators";
-import { DevisService } from "../../core/services/devis/devis.service";
 import { ClientService } from "src/app/clients/client.service";
-import { ToastrService } from "ngx-toastr";
 import { ProspectService } from "src/app/prospects/prospect.service";
+import { DevisService } from "../../core/services/devis/devis.service";
 
 @Component({
   selector: "app-devis-form",
@@ -28,8 +27,7 @@ export class DevisFormComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private clientService: ClientService,
-    private prospectService: ProspectService,
-
+    private prospectService: ProspectService
   ) {}
 
   ngOnInit(): void {
@@ -55,27 +53,27 @@ export class DevisFormComponent implements OnInit {
       modePaiement: [null],
     });
   }
-loadClients(): void {
-        this.clientService.getClients().subscribe({
-            next: (response) => {
-                this.clients = response.data || [];
-            },
-            error: (error) => {
-                this.error = 'Error loading clients';
-                console.error('Error loading clients:', error);
-            }
-        });
-    }
-    loadProspects(): void {
-      this.prospectService.getProspects().subscribe({
-          next: (response) => {
-              this.prospects = response.data || [];
-          },
-          error: (error) => {
-              this.error = 'Error loading prospects';
-              console.error('Error loading prospects:', error);
-          }
-      });
+  loadClients(): void {
+    this.clientService.getClients().subscribe({
+      next: (response) => {
+        this.clients = response.data || [];
+      },
+      error: (error) => {
+        this.error = "Error loading clients";
+        console.error("Error loading clients:", error);
+      },
+    });
+  }
+  loadProspects(): void {
+    this.prospectService.getProspects().subscribe({
+      next: (response) => {
+        this.prospects = response.data || [];
+      },
+      error: (error) => {
+        this.error = "Error loading prospects";
+        console.error("Error loading prospects:", error);
+      },
+    });
   }
   loadDevis(id: number): void {
     this.isLoading = true;
@@ -107,7 +105,14 @@ loadClients(): void {
     this.isSubmitting = true;
     this.error = null;
 
-    const devis = this.devisForm.value;
+    const formValues = this.devisForm.value;
+
+    // Create a new devis object with properly formatted client and prospect
+    const devis = {
+      ...formValues,
+      client: formValues.client ? { id: formValues.client } : null,
+      prospect: formValues.prospect ? { id: formValues.prospect } : null,
+    };
 
     const request =
       this.editMode && this.devisId

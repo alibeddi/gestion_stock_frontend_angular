@@ -45,7 +45,7 @@
                 <mat-option [value]="null">Sélectionnez un client</mat-option>
                 <mat-option *ngFor="let client of clients" [value]="client.id">
                   {{ client.nom }}
-              </mat-option>
+                </mat-option>
               </mat-select>
             </mat-form-field>
           </div>
@@ -55,9 +55,12 @@
               <mat-label>Prospect</mat-label>
               <mat-select formControlName="prospect">
                 <mat-option [value]="null">Sélectionnez un prospect</mat-option>
-                <mat-option *ngFor="let prospect of prospects" [value]="prospect.id">
+                <mat-option
+                  *ngFor="let prospect of prospects"
+                  [value]="prospect.id"
+                >
                   {{ prospect.nom }}
-              </mat-option>
+                </mat-option>
               </mat-select>
             </mat-form-field>
           </div>
@@ -105,14 +108,15 @@
               <mat-label>Mode de livraison</mat-label>
               <mat-select formControlName="modeLivraison">
                 <mat-option [value]="null">Sélectionnez un mode</mat-option>
-                <mat-option value="RETRAIT_SUR_PLACE"
-                  >Retrait sur place</mat-option
+                <mat-option value="EN_MAGASIN">En magasin</mat-option>
+                <mat-option value="LIVRAISON_GRATUITE"
+                  >Livraison gratuite</mat-option
                 >
                 <mat-option value="LIVRAISON_STANDARD"
                   >Livraison standard</mat-option
                 >
-                <mat-option value="LIVRAISON_EXPRESS"
-                  >Livraison express</mat-option
+                <mat-option value="TRANSPORT_EXPRESS"
+                  >Transport express</mat-option
                 >
               </mat-select>
             </mat-form-field>
